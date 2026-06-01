@@ -48,7 +48,40 @@ graph TD
 
 ---
 
-## 3. Product Outcomes & Expected Impact
+## 3. The Conversion Funnel & Reward Rationale
+
+A common pitfall of financial simulators is that they become "sandboxed islands"—users engage with the simulator but never cross the chasm to real-money investments. This strategy resolves this friction through a two-part conversion mechanism:
+
+### Part A: Psychological Transition (Zero-Friction UI)
+Because the Paper Trading interface is **visually identical** to the real-money stock-trading screens, completing mock trades builds direct muscle memory. The user learns exactly where buttons are, how to input numbers, and how to read the stock chart. 
+Upon completing the milestones, the transition is seamless: the "Graduation Certificate" provides a single tap to switch the view to "Real Mode." Because they have already mastered this exact screen layout, the user's navigational anxiety is reduced to zero.
+
+### Part B: Incentive Rationale (The Sunk Cost Reward)
+Gaining confidence is not enough; we must also overcome the financial activation barrier. We propose a **Trade Fee Waiver** (e.g., zero commissions on their first 3 transactions) as the graduation reward:
+* **The Endowment Effect:** Because the user had to "work" to unlock this reward by completing the 5 practice milestones, they assign a high perceived value to it. 
+* **Loss Aversion:** If they graduate but do not open a funded account, this hard-earned waiver will expire. This triggers standard loss aversion and sunk-cost psychology—users are highly motivated to use a reward they feel they have already "paid for" with their time and effort.
+* **Instant Gratification:** Placing the reward CTA directly on the graduation card captures them at the moment of highest enthusiasm and confidence, converting them before cognitive friction sets in.
+
+---
+
+## 4. Proposed Strategy Evaluation: Will it Work?
+
+For this strategy to succeed in production, we must evaluate both its strengths and potential friction points:
+
+### Why the Strategy Will Work (The Bull Case)
+1. **Lowers Capital Friction:** Users do not need to deposit new external capital. The platform can allow savers to easily sweep a small fraction of their existing idle cash balances or matured savings into their new stock wallet, making the first trade feel seamless.
+2. **Mitigates Choice Paralysis:** The search explorer highlights a curated "NGX 30" index rather than presenting thousands of options. Limiting choices helps users take action quickly.
+3. **Structured Learning Loop:** By enforcing both "Buy" and "Sell" milestones, we ensure users learn the complete cycle of trading, making them feel like capable investors.
+
+### Gaps & Potential Failure Points (The Bear Case)
+1. **The Volatility Disincentive:** Savings accounts in Nigeria offer stable, predictable interest rates. If a user tries paper stocks during a market downturn and watches their mock portfolio drop, they may conclude that stocks are too risky and retreat to passive savings.
+   * *Mitigation:* We must include automated tip cards during market dips explaining that temporary downturns are standard, showing long-term historical recovery charts.
+2. **KYC Drop-off:** Entering the sandbox requires zero friction (no documents needed). However, transitioning to real stocks requires strict regulatory KYC (BVN validation, address verification). This represents a massive hurdle.
+   * *Mitigation:* We must allow users to initiate the KYC verification process in the background *while* they are in the 7-day practice mode, ensuring their real account is fully verified by the time they graduate.
+
+---
+
+## 5. Product Outcomes & Expected Impact
 What must happen to consider this a valid, successful feature?
 
 *   **Primary Outcome:** Transform passive, cash-holding users into qualified, educated leads for the stock product.
@@ -57,7 +90,7 @@ What must happen to consider this a valid, successful feature?
 
 ---
 
-## 4. Key Assumptions Made
+## 6. Key Assumptions Made
 For this strategy to succeed, we rely on the following assumptions:
 1.  **Desire to Learn:** Users actually want to invest in stocks but are held back by fear/lack of knowledge, not a lack of capital.
 2.  **Transferable Confidence:** Confidence gained in a mock environment will reliably translate to real-money environments.
@@ -65,14 +98,14 @@ For this strategy to succeed, we rely on the following assumptions:
 
 ---
 
-## 5. Tradeoffs & Risks
+## 7. Tradeoffs & Risks
 *   **Engineering Effort vs. Core Product:** Building a robust mock ledger takes engineering resources away from real-money features. *The Tradeoff: The long-term LTV of an educated investor heavily outweighs the short-term development cost of the mock ledger.*
 *   **Simulator vs. Seriousness:** If the feature feels too game-like, users may take wild risks they wouldn't take in real life, learning bad habits. *Mitigation: Enforcing strict minimum/maximum starting balances and realistic pricing constraints.*
 *   **Data Costs:** Allowing thousands of users to mock-trade means more hits to real-time price feeds and WebSockets. This is a negative risk factor, as it could dramatically increase 3rd-party data provider costs without guaranteeing immediate revenue. This requires rate-limiting considerations from engineering.
 
 ---
 
-## 6. Success & Failure Metrics
+## 8. Success & Failure Metrics
 How will we know if the strategy is working?
 
 ### 🟢 Success Signals (KPIs)
@@ -88,7 +121,7 @@ How will we know if the strategy is working?
 
 ---
 
-## 7. Phased Rollout & Testing Strategy
+## 9. Phased Rollout & Testing Strategy
 To properly test this theory before a general release, I would structure a phased rollout targeting two very specific user cohorts:
 
 *   **Segment A (The "Disciplined Saver"):** Users who have maintained consistent saving habits for 3+ months but have *never* purchased a stock.
@@ -98,7 +131,7 @@ To properly test this theory before a general release, I would structure a phase
 
 ---
 
-## 8. Implementation Barriers & Open Questions
+## 10. Implementation Barriers & Open Questions
 As the PM driving this feature, these are the critical questions to investigate with engineering and compliance teams:
 
 1.  **Data Architecture:** Can the current WebSocket price feed be cleanly abstracted so that mock trades listen to it, but write to a completely separate, non-regulated `mock_ledger` database without hitting rate limits?
