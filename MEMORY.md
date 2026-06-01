@@ -9,3 +9,7 @@
 
 ## Decision Log
 - `[2026-06-01 | v1.0.0]` Initialized project using Vite React TS. Confirmed we will simulate the iOS native experience in a custom viewport.
+- `[2026-06-01 | v5.0.0]` Added `html.in-iframe` class hooks to prevent iframe document height expansion, resolving bottom sheet clipping and onboarding guide tour coordinates shift.
+- `[2026-06-01 | v5.1.0]` Updated fullscreen prototype modal in presentation.html to feature a solid white background and Cancel CTA button.
+- `[2026-06-01 | v5.2.0]` Increased the segmented control outer container height to 44px (touch target standard) and indicator height to 38px with dynamic left transitions.
+- `[2026-06-01 | v5.3.0]` Set `flexShrink: 0` on the segmented control container to prevent flex layouts under virtual keyboard constraints from collapsing the container height to 20px.
