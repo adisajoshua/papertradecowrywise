@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ViewportFrame } from './components/ViewportFrame';
 import { Onboarding } from './components/Onboarding';
 import { InvestTab } from './components/InvestTab';
@@ -26,6 +26,81 @@ function App() {
   const [showExplore, setShowExplore] = useState(false);
   const [showFundsMessage, setShowFundsMessage] = useState(false);
   const [activeTourStep, setActiveTourStep] = useState<number | null>(null);
+
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      const data = event.data;
+      if (data && data.type === 'GOTO_STATE') {
+        if (data.state === 'RESET') {
+          handleReset();
+        } else if (data.state === 'ONBOARDING') {
+          setPortfolio(null);
+          setIsPaperMode(false);
+          setSelectedStock(null);
+          setShowExplore(false);
+          setActiveTourStep(null);
+        } else if (data.state === 'TOUR_BANNER') {
+          if (!portfolio) {
+            const newPort = initializePortfolio(50000);
+            setPortfolio(newPort);
+          }
+          setIsPaperMode(true);
+          setCurrentTab('Invest');
+          setSelectedStock(null);
+          setShowExplore(false);
+          setActiveTourStep(1);
+        } else if (data.state === 'TOUR_CARD') {
+          if (!portfolio) {
+            const newPort = initializePortfolio(50000);
+            setPortfolio(newPort);
+          }
+          setIsPaperMode(true);
+          setCurrentTab('Invest');
+          setSelectedStock(null);
+          setShowExplore(false);
+          setActiveTourStep(2);
+        } else if (data.state === 'DASHBOARD') {
+          if (!portfolio) {
+            const newPort = initializePortfolio(50000);
+            setPortfolio(newPort);
+          }
+          setIsPaperMode(true);
+          setCurrentTab('Invest');
+          setSelectedStock(null);
+          setShowExplore(false);
+          setActiveTourStep(null);
+        } else if (data.state === 'STOCK_DETAIL') {
+          if (!portfolio) {
+            const newPort = initializePortfolio(50000);
+            setPortfolio(newPort);
+          }
+          setIsPaperMode(true);
+          setCurrentTab('Invest');
+          // Load a stock like GTCO
+          const mockStocks = JSON.parse(localStorage.getItem("cowrywise_paper_stocks") || "[]");
+          const target = mockStocks.find((s: any) => s.symbol === 'GTCO') || mockStocks[0];
+          if (target) {
+            setSelectedStock(target);
+          }
+          setShowExplore(false);
+          setActiveTourStep(null);
+        } else if (data.state === 'REPORT') {
+          if (!portfolio) {
+            const newPort = initializePortfolio(50000);
+            setPortfolio(newPort);
+          }
+          setIsPaperMode(true);
+          setCurrentTab('Profile');
+          setSelectedStock(null);
+          setShowExplore(false);
+          setActiveTourStep(null);
+        }
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, [portfolio]);
 
   const handleReset = () => {
     resetPaperTrading();

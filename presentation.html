@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Strategy Case Study: Cowrywise Paper Trade</title>
+  <!-- Modern Premium Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --c-navy: hsl(215, 82%, 22%);
+      --c-blue: hsl(214, 100%, 48%);
+      --c-blue-bg: hsl(215, 100%, 97%);
+      --c-text-primary: hsl(215, 50%, 15%);
+      --c-text-secondary: hsl(215, 20%, 45%);
+      --c-border: hsl(215, 30%, 90%);
+      --shadow-premium: 0 20px 40px rgba(10, 46, 101, 0.08);
+      --font-display: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--c-text-primary);
+      background-color: #FAFBFD;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header Nav */
+    header {
+      background-color: #ffffff;
+      border-bottom: 1px solid var(--c-border);
+      padding: 16px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+      flex-shrink: 0;
+    }
+
+    .logo-block {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-icon {
+      width: 24px;
+      height: 24px;
+      background: var(--c-blue);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 14px;
+      font-family: var(--font-display);
+    }
+
+    .logo-text {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--c-navy);
+    }
+
+    .logo-tag {
+      background-color: var(--c-blue-bg);
+      color: var(--c-blue);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .header-links {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .header-link {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--c-text-secondary);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .header-link:hover {
+      color: var(--c-blue);
+    }
+
+    /* Main Split Layout */
+    .container {
+      flex: 1;
+      display: flex;
+      height: calc(100vh - 57px);
+      position: relative;
+    }
+
+    /* Left Panel: Presentation Slides */
+    .left-panel {
+      width: 55%;
+      height: 100%;
+      padding: 60px 80px 80px 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow-y: auto;
+      border-right: 1px solid var(--c-border);
+      position: relative;
+    }
+
+    .slide-deck {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .slide {
+      display: none;
+      flex-direction: column;
+      gap: 20px;
+      animation: fade-in 0.4s ease-out forwards;
+      width: 100%;
+    }
+
+    .slide.active {
+      display: flex;
+    }
+
+    .slide-tag {
+      color: var(--c-blue);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .slide-title {
+      font-family: var(--font-display);
+      font-size: 36px;
+      font-weight: 800;
+      line-height: 1.15;
+      color: var(--c-navy);
+      letter-spacing: -0.8px;
+    }
+
+    .slide-intro {
+      font-size: 16px;
+      color: var(--c-text-secondary);
+      line-height: 1.5;
+      border-left: 3px solid var(--c-blue);
+      padding-left: 16px;
+      margin: 8px 0;
+    }
+
+    /* Progressive Disclosure list items */
+    .bullet-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 10px;
+    }
+
+    .bullet-item {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 12px 16px;
+      background: white;
+      border-radius: 12px;
+      border: 1px solid var(--c-border);
+      transition: all 0.2s;
+    }
+
+    .bullet-item:hover {
+      border-color: var(--c-blue);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0, 102, 245, 0.03);
+    }
+
+    .bullet-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--c-blue-bg);
+      color: var(--c-blue);
+      font-weight: 700;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .bullet-text-container {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .bullet-header {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--c-navy);
+    }
+
+    .bullet-desc {
+      font-size: 12px;
+      color: var(--c-text-secondary);
+      line-height: 1.4;
+    }
+
+    .bullet-screenshot-btn {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--c-blue);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 6px;
+      align-self: flex-start;
+    }
+
+    /* Footer Navigation */
+    .slide-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 40px;
+      border-top: 1px solid var(--c-border);
+      flex-shrink: 0;
+    }
+
+    .indicators {
+      display: flex;
+      gap: 8px;
+    }
+
+    .indicator-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--c-border);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .indicator-dot.active {
+      background-color: var(--c-blue);
+      width: 20px;
+      border-radius: 4px;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 12px;
+    }
+
+    .nav-btn {
+      border: 1px solid var(--c-border);
+      background-color: white;
+      color: var(--c-navy);
+      font-weight: 700;
+      font-size: 13px;
+      padding: 10px 18px;
+      border-radius: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+      outline: none;
+    }
+
+    .nav-btn:hover:not(:disabled) {
+      background-color: var(--c-navy);
+      color: white;
+      border-color: var(--c-navy);
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .nav-btn.primary-btn {
+      background-color: var(--c-blue);
+      color: white;
+      border-color: var(--c-blue);
+    }
+
+    .nav-btn.primary-btn:hover {
+      background-color: hsl(214, 100%, 40%);
+    }
+
+    /* Right Panel: iPhone Shell and Live Prototype Frame */
+    .right-panel {
+      width: 45%;
+      height: 100%;
+      background: #F1F4F9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      position: relative;
+    }
+
+    /* iPhone Frame Mockup style */
+    .phone-wrapper {
+      position: relative;
+      width: 330px;
+      height: 670px;
+      background: #000000;
+      border-radius: 48px;
+      padding: 12px;
+      box-shadow: 0 30px 60px rgba(10, 46, 101, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 4px solid #1E293B;
+    }
+
+    /* Speaker notch & dynamic island effect */
+    .phone-notch {
+      position: absolute;
+      top: 22px;
+      width: 100px;
+      height: 25px;
+      background: #000000;
+      border-radius: 15px;
+      z-index: 100;
+    }
+
+    .phone-screen {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: #FFFFFF;
+      border-radius: 38px;
+      overflow: hidden;
+      box-sizing: border-box;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .phone-screen iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #FFFFFF;
+    }
+
+    .phone-status-overlay {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 102, 245, 0.08);
+      color: var(--c-blue);
+      border: 1px dashed var(--c-blue);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 12px;
+      white-space: nowrap;
+      z-index: 100;
+      pointer-events: none;
+    }
+
+    /* Screenshot Modal overlay inside Slide Panel */
+    .screenshot-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 46, 101, 0.85);
+      backdrop-filter: blur(5px);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      box-sizing: border-box;
+    }
+
+    .screenshot-card {
+      background: white;
+      border-radius: 20px;
+      padding: 16px;
+      width: 100%;
+      max-width: 360px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+      animation: zoom-in 0.3s ease-out;
+    }
+
+    .screenshot-close-btn {
+      position: absolute;
+      top: -12px;
+      right: -12px;
+      width: 28px;
+      height: 28px;
+      background: #ef4444;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+    }
+
+    .screenshot-img {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid var(--c-border);
+      box-shadow: var(--shadow-premium);
+    }
+
+    .screenshot-caption {
+      font-size: 12px;
+      color: var(--c-text-secondary);
+      text-align: center;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    /* Mobile Blocking Overlay */
+    .mobile-blocking-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(10, 46, 101, 0.95);
+      backdrop-filter: blur(10px);
+      z-index: 9999;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      text-align: center;
+      color: white;
+    }
+
+    .mobile-card {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 24px;
+      padding: 32px 24px;
+      max-width: 400px;
+      backdrop-filter: blur(10px);
+    }
+
+    .mobile-title {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .mobile-desc {
+      font-size: 14px;
+      line-height: 1.5;
+      opacity: 0.85;
+      margin-bottom: 24px;
+    }
+
+    .mobile-btn {
+      background-color: var(--c-blue);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 20px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Keyframes */
+    @keyframes fade-in {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes zoom-in {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    /* Mobile media query to block screen */
+    @media (max-width: 1024px) {
+      .mobile-blocking-overlay {
+        display: flex;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header Nav -->
+  <header>
+    <div class="logo-block">
+      <div class="logo-icon">C</div>
+      <span class="logo-text">Cowrywise "Paper Trade"</span>
+      <span class="logo-tag">Product Case Study</span>
+    </div>
+    <div class="header-links">
+      <a href="product_strategy.md" class="header-link" target="_blank">Strategy Document (Markdown)</a>
+      <a href="walkthrough.md" class="header-link" target="_blank">Walkthrough Details</a>
+    </div>
+  </header>
+
+  <!-- Split Panel Layout -->
+  <div class="container">
+    
+    <!-- Left Presentation slides -->
+    <div class="left-panel">
+      <!-- Screenshot Zoom Modal inside panel -->
+      <div class="screenshot-overlay" id="screenshot-overlay">
+        <div class="screenshot-card">
+          <button class="screenshot-close-btn" onclick="closeScreenshot()">×</button>
+          <img src="" class="screenshot-img" id="screenshot-img" alt="Prototype Screenshot">
+          <p class="screenshot-caption" id="screenshot-caption"></p>
+        </div>
+      </div>
+
+      <div class="slide-deck">
+        
+        <!-- Slide 1: The Problem & Strategic Hook -->
+        <div class="slide active" data-state="ONBOARDING">
+          <span class="slide-tag">01. Strategy Hook</span>
+          <h2 class="slide-title">Active vs. Passive Financial Learning</h2>
+          <p class="slide-intro">
+            Traditional wealth platforms educate users via passive resources (blogs, videos). Users read "How Stocks Work" but close the app without acting because real money stakes create high friction.
+          </p>
+          <div class="bullet-list">
+            <div class="bullet-item">
+              <div class="bullet-num">1</div>
+              <div class="bullet-text-container">
+                <span class="bullet-header">The Psychological Hurdle</span>
+                <span class="bullet-desc">Savers possess capital but lack execution confidence. Fear of immediate losses stalls real trading account activations.</span>
+              </div>
+            </div>
+            <div class="bullet-item">
+              <div class="bullet-num">2</div>
+              <div class="bullet-text-container">
+                <span class="bullet-header">The "How Might We" Opportunity</span>
+                <span class="bullet-desc">How might we help users build execution confidence in real-time and learn about stocks in a way that is active, hands-on, and risk-free?</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 2: Onboarding Setup (Realistic Capital) -->
+        <div class="slide" data-state="ONBOARDING">
+          <span class="slide-tag">02. Onboarding Setup</span>
+          <h2 class="slide-title">Realistic Anchoring vs. Abstract Millions</h2>
+          <p class="slide-intro">
+            Instead of starting users with a generic "₦1 Million" mock balance, the onboarding prompts them to set a capital ceiling matched to their actual savings capacity.
+          </p>
+          <div class="bullet-list">
+            <div class="bullet-item">
+              <div class="bullet-num">1</div>
+              <div class="bullet-text-container">
+                <span class="bullet-header">₦10k - ₦50k Capital Prompt</span>
+                <span class="bullet-desc">Tying simulated cash to reality makes returns/percentage gains feel emotionally relevant to their everyday budget.</span>
+                <button class="bullet-screenshot-btn" onclick="showScreenshot('media__1780302831941.png', 'Starting Onboarding: Setting realistic capital (₦10k - ₦50k) rather than abstract millions.')">🔍 View Screenshot</button>
+              </div>
+            </div>
+            <div class="bullet-item">
+              <div class="bullet-num">2</div>
+              <div class="bullet-text-container">
+                <span class="bullet-header">Interactive Test in Iframe</span>
+                <span class="bullet-desc">Try it yourself on the phone screen! Type a value between ₦5k and ₦10M, and tap "Let's Practice" to begin.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 3: Spotlight Guided Tour -->
+        <div class="slide" data-state="TOUR_BANNER">
+          <span class="slide-tag">03. Onboarding Guidance</span>
+          <h2 class="slide-title">Focus & Spotlight Onboarding</h2>
+          <p class="slide-intro">
+            A 4-step guided spotlight tour dims the screen to focus user attention on critical workspace zones, preventing Day-1 dashboard bounces.
+          </p>
+          <div class="bullet-list">
+            <div class="bullet-item">
+              <div class="bullet-num">1</div>
+              <div class="bullet-text-container">
+                <span class="bullet-header">Step-by-Step Guided Tour</span>
+                <span class="bullet-desc">Focuses on: 1) Practice Indicator Banner, 2) Mock Capital Card, 3) Stocks Explore FAB, and 4) Weekly Performance Report Tab.</span>
+                <button class="bullet-screenshot-btn" onclick="showScreenshot('media__1780280901810.png', 'Step 1 of spotlight onboarding focusing user attention on the Practice Indicator Banner.')">🔍 View Step 1</button>
+              </div>
+            </div>
+            <div class="bullet-item">
+              <div class="bullet-num">2</div>
+              <div class="bullet-text-container">
+                <span class="bullet-header">Precise Coordinates</span>
+                <span class="bullet-desc">Coordinates are calibrated relative to the active mobile canvas, preventing scroll overlap and overlay blockages.</span>
+                <button class="bullet-screenshot-btn" onclick="showScreenshot('media__1780281292816.png', 'Step 2 of spotlight onboarding highlighting the Mock Capital Card.')">🔍 View Step 2</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 4: Milestone Checklist -->
+        <div class="slide" data-state="DASHBOARD">
+          <span class="slide-tag">04. Engagement Loops</span>
+          <h2 class="slide-title">The "Practice Journey" Checklist</h2>
+          <p class="slide-intro">
+            Simulators often become empty dashboards where users bounce. This proposal integrates an interactive milestone card that gamifies user activation.
+          </p>
+          <div class="bullet-list">
+            <div class="bullet-item">
+              <div class="bullet-num">1</div>
+              <div class="bullet-text-container">
+                <span class="bullet-header">Structured Checklist Tasks</span>
+                <span class="bullet-desc">Guides users to: 1) Research a stock, 2) Analyze P/E ratio slider, 3) Place first mock order, 4) Track live ticks, and 5) Execute a mock sell order.</span>
+                <button class="bullet-screenshot-btn" onclick="showScreenshot('media__1780306615226.png', 'The structured milestone card with aligned checkboxes and inline CTAs to drive activation.')">🔍 View Checklist</button>
+              </div>
+            </div>
+            <div class="bullet-item">
+              <div class="bullet-num">2</div>
+              <div class="bullet-text-container">
+                <span class="bullet-header">Perfect Visual Alignment (v3.1 Fix)</span>
+                <span class="bullet-desc">Checkbox shapes align perfectly to the first text baseline, and CTAs are stacked inline below descriptions to eliminate horizontal squeezing.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 5: Sliders & Metaphors -->
+        <div class="slide" data-state="STOCK_DETAIL">
+          <span class="slide-tag">05. Active Learning</span>
+          <h2 class="slide-title">Interactive Sliders & Metaphors</h2>
+          <p class="slide-intro">
+            Traditional statistics grids present dry mathematical figures. We replaced them with a balanced grid where metrics trigger custom bottom-sheet explanations.
+          </p>
+          <div class="bullet-list">
+            <div class="bullet-item">
+              <div class="bullet-num">1</div>
+              <div class="bullet-text-container">
+                <span class="bullet-header">Visual Metaphorical Sheets</span>
+                <span class="bullet-desc">Tap Price, EPS, or Market Cap inside the stock details on the phone. Each metrics page explains technical jargon using pizza-slice and shopping-mall analogies.</span>
+                <button class="bullet-screenshot-btn" onclick="showScreenshot('media__1780303858644.png', 'Interactive Bottom Sheets explain complex metrics like Price (P) and Earnings (EPS) using clear analogies.')">🔍 View Metaphor Sheets</button>
+              </div>
+            </div>
+            <div class="bullet-item">
+              <div class="bullet-num">2</div>
+              <div class="bullet-text-container">
+                <span class="bullet-header">Valuation Slider Math</span>
+                <span class="bullet-desc">Tapping P/E Ratio opens a slider mockup. Drag Share Price or Earnings to watch the valuation multiple recalculate with live indicators.</span>
+                <button class="bullet-screenshot-btn" onclick="showScreenshot('media__1780303472662.png', 'Dynamic P/E Ratio Slider tool showing real-time valuation updates and status lights.')">🔍 View Slider Tool</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 6: Graduation & Conversion Loop -->
+        <div class="slide" data-state="REPORT">
+          <span class="slide-tag">06. Conversion Hook</span>
+          <h2 class="slide-title">Graduation Rewards & Conversion</h2>
+          <p class="slide-intro">
+            The funnel transitions users from practice to real-money investing through a value-generating threshold milestone.
+          </p>
+          <div class="bullet-list">
+            <div class="bullet-item">
+              <div class="bullet-num">1</div>
+              <div class="bullet-text-container">
+                <span class="bullet-header">Endowment & Loss Aversion Reward</span>
+                <span class="bullet-desc">Once all 5 milestones check off, the user "graduates" and is rewarded with a commission-free trading waiver. Since they worked to earn it, they are highly motivated to fund an account before it expires.</span>
+                <button class="bullet-screenshot-btn" onclick="showScreenshot('media__1780304276051.png', 'Graduated Investor certificate showing celebratory confetti and direct conversion CTA.')">🔍 View Graduation Certificate</button>
+              </div>
+            </div>
+            <div class="bullet-item">
+              <div class="bullet-num">2</div>
+              <div class="bullet-text-container">
+                <span class="bullet-header">Comparative Returns Report</span>
+                <span class="bullet-desc">The report tab stacks practice yields side-by-side with static savings returns, showing savers the opportunity cost of holding idle cash.</span>
+                <button class="bullet-screenshot-btn" onclick="showScreenshot('media__1780304230043.png', 'The report tab comparing simulated equity returns against standard savings yields.')">🔍 View Yield Report</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Slide Footer controls -->
+      <div class="slide-footer">
+        <div class="indicators" id="indicators">
+          <div class="indicator-dot active" onclick="gotoSlide(0)"></div>
+          <div class="indicator-dot" onclick="gotoSlide(1)"></div>
+          <div class="indicator-dot" onclick="gotoSlide(2)"></div>
+          <div class="indicator-dot" onclick="gotoSlide(3)"></div>
+          <div class="indicator-dot" onclick="gotoSlide(4)"></div>
+          <div class="indicator-dot" onclick="gotoSlide(5)"></div>
+        </div>
+        <div class="nav-buttons">
+          <button class="nav-btn" id="prev-btn" onclick="prevSlide()" disabled>← Previous</button>
+          <button class="nav-btn primary-btn" id="next-btn" onclick="nextSlide()">Next Step →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Panel: Live Phone Simulation -->
+    <div class="right-panel">
+      <div class="phone-wrapper">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <iframe id="prototype-iframe" src="/" title="Interactive Prototype Shell"></iframe>
+        </div>
+      </div>
+      <div class="phone-status-overlay">
+        ⚡ Interactive Prototype: Connected
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Mobile blocking overlay container -->
+  <div class="mobile-blocking-overlay" id="mobile-overlay">
+    <div class="mobile-card">
+      <div class="mobile-title">🖥️ Desktop Display Required</div>
+      <div class="mobile-desc">
+        This interactive Product strategy presentation features a live phone simulator side-by-side with strategic slides. Please copy this link and open it on your laptop or desktop computer to interact with the mockup!
+      </div>
+      <button class="mobile-btn" onclick="dismissMobileOverlay()">Dismiss (View text only)</button>
+    </div>
+  </div>
+
+  <!-- Script logic for presentation navigation -->
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.indicator-dot');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const iframe = document.getElementById('prototype-iframe');
+    const screenshotOverlay = document.getElementById('screenshot-overlay');
+    const screenshotImg = document.getElementById('screenshot-img');
+    const screenshotCaption = document.getElementById('screenshot-caption');
+
+    // Synchronize Iframe states based on current slide
+    function syncIframeState() {
+      const activeSlide = slides[currentSlide];
+      const state = activeSlide.getAttribute('data-state');
+      
+      if (iframe && iframe.contentWindow) {
+        // Send window postMessage to active React prototype
+        iframe.contentWindow.postMessage({
+          type: 'GOTO_STATE',
+          state: state
+        }, '*');
+      }
+    }
+
+    // Slide navigation control
+    function updateSlideDisplay() {
+      slides.forEach((slide, idx) => {
+        if (idx === currentSlide) {
+          slide.classList.add('active');
+        } else {
+          slide.classList.remove('active');
+        }
+      });
+
+      dots.forEach((dot, idx) => {
+        if (idx === currentSlide) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
+      });
+
+      // Enable/Disable buttons
+      prevBtn.disabled = currentSlide === 0;
+      if (currentSlide === slides.length - 1) {
+        nextBtn.textContent = 'Restart Presentation ↺';
+      } else {
+        nextBtn.textContent = 'Next Step →';
+      }
+
+      // Sync Iframe after slide transition completes
+      setTimeout(syncIframeState, 150);
+    }
+
+    function nextSlide() {
+      if (currentSlide === slides.length - 1) {
+        currentSlide = 0;
+      } else {
+        currentSlide++;
+      }
+      updateSlideDisplay();
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateSlideDisplay();
+      }
+    }
+
+    function gotoSlide(idx) {
+      currentSlide = idx;
+      updateSlideDisplay();
+    }
+
+    // Keyboard navigation (arrows)
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'Space') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft') {
+        prevSlide();
+      }
+    });
+
+    // Handle Iframe Onload synchronization
+    if (iframe) {
+      iframe.addEventListener('load', () => {
+        setTimeout(syncIframeState, 600);
+      });
+    }
+
+    // Modal Screenshot popups
+    function showScreenshot(imgName, captionText) {
+      screenshotImg.src = './screenshots/' + imgName;
+      screenshotCaption.textContent = captionText;
+      screenshotOverlay.style.display = 'flex';
+    }
+
+    function closeScreenshot() {
+      screenshotOverlay.style.display = 'none';
+    }
+
+    // Mobile blocking
+    function dismissMobileOverlay() {
+      document.getElementById('mobile-overlay').style.display = 'none';
+    }
+
+    // Close screenshots on escape key press
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeScreenshot();
+      }
+    });
+  </script>
+</body>
+</html>
