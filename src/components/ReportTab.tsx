@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import { Award, ArrowRight, Clipboard } from 'lucide-react';
 import { getPortfolioSummary, getOrders } from '../services/mockDataService';
 
-export const ReportTab: React.FC = () => {
+interface ReportTabProps {
+  onExitPaperMode?: () => void;
+}
+
+export const ReportTab: React.FC<ReportTabProps> = ({ onExitPaperMode }) => {
   const [copied, setCopied] = useState(false);
   
   const summary = getPortfolioSummary();
@@ -74,7 +78,7 @@ export const ReportTab: React.FC = () => {
               </button>
             </div>
 
-            <button style={styles.realInvestBtn}>
+            <button style={styles.realInvestBtn} onClick={onExitPaperMode}>
               Start Real Portfolio <ArrowRight size={16} style={{ marginLeft: '6px' }} />
             </button>
           </div>

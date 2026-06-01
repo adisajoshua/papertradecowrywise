@@ -115,3 +115,23 @@ body {
   from { transform: translateY(100%); }
   to { transform: translateY(0); }
 }
+
+/* Iframe specific overrides to prevent layout collapse and gray borders */
+body.in-iframe {
+  background-color: transparent !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+body.in-iframe #root {
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}

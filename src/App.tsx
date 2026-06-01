@@ -175,6 +175,7 @@ function App() {
               }}
               onReset={handleReset}
               onOpenReport={() => setCurrentTab('Profile')}
+              onExitPaperMode={() => setIsPaperMode(false)}
             />
           );
         }
@@ -196,7 +197,7 @@ function App() {
           />
         );
       case 'Profile':
-        return <ReportTab />;
+        return <ReportTab onExitPaperMode={() => setIsPaperMode(false)} />;
       default:
         return null;
     }

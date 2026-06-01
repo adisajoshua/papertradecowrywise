@@ -5,9 +5,42 @@ interface ViewportFrameProps {
 }
 
 export const ViewportFrame: React.FC<ViewportFrameProps> = ({ children }) => {
+  const isInsideIframe = React.useMemo(() => {
+    try {
+      return window.self !== window.top;
+    } catch (e) {
+      return true;
+    }
+  }, []);
+
+  React.useEffect(() => {
+    if (isInsideIframe) {
+      document.body.classList.add('in-iframe');
+      return () => {
+        document.body.classList.remove('in-iframe');
+      };
+    }
+  }, [isInsideIframe]);
+
+  const outerContainerStyle: React.CSSProperties = {
+    ...styles.outerContainer,
+    ...(isInsideIframe ? { padding: 0, backgroundColor: 'transparent', height: '100%' } : {})
+  };
+
+  const phoneFrameStyle: React.CSSProperties = {
+    ...styles.phoneFrame,
+    ...(isInsideIframe ? { 
+      boxShadow: 'none', 
+      borderRadius: 0,
+      width: '100%',
+      height: '100%',
+      border: 'none'
+    } : {})
+  };
+
   return (
-    <div style={styles.outerContainer}>
-      <div style={styles.phoneFrame}>
+    <div style={outerContainerStyle}>
+      <div style={phoneFrameStyle}>
         {/* iPhone Notch */}
         <div style={styles.notch} />
 

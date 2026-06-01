@@ -1,26 +1,53 @@
 import React, { useEffect, useState } from 'react';
-import { Plus, Info, RefreshCw, LogOut, CheckCircle2, Circle, TrendingUp, BookOpen, Award, HelpCircle } from 'lucide-react';
+import { Plus, Info, RefreshCw, LogOut, CheckCircle2, Circle, TrendingUp, BookOpen, Award, HelpCircle, Clipboard, Check, ArrowRight } from 'lucide-react';
 import { getPortfolioSummary, simulateMarketUpdates, getMilestones, updateMilestone } from '../services/mockDataService';
 import { BottomSheet } from './BottomSheet';
+import confetti from 'canvas-confetti';
 
 interface PaperDashboardProps {
   onOpenExplore: () => void;
   onSelectPosition: (symbol: string) => void;
   onReset: () => void;
   onOpenReport: () => void;
+  onExitPaperMode: () => void;
 }
 
 export const PaperDashboard: React.FC<PaperDashboardProps> = ({
   onOpenExplore,
   onSelectPosition,
   onReset,
-  onOpenReport
+  onOpenReport,
+  onExitPaperMode
 }) => {
   const [summary, setSummary] = useState(getPortfolioSummary());
   const [timeFilter, setTimeFilter] = useState<'1D' | '1W' | '1M' | '1Y'>('1W');
   const [showAddFunds, setShowAddFunds] = useState(false);
   const [addAmount, setAddAmount] = useState('50000');
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const [hasCelebrated, setHasCelebrated] = useState(() => {
+    return localStorage.getItem('cowrywise_paper_celebrated') === 'true';
+  });
+
+  useEffect(() => {
+    const currentMilestones = getMilestones();
+    const completedCount = Object.values(currentMilestones).filter(Boolean).length;
+    if (completedCount === 5 && !hasCelebrated) {
+      confetti({
+        particleCount: 150,
+        spread: 80,
+        origin: { y: 0.6 }
+      });
+      setHasCelebrated(true);
+      localStorage.setItem('cowrywise_paper_celebrated', 'true');
+    } else if (completedCount < 5) {
+      if (hasCelebrated) {
+        setHasCelebrated(false);
+        localStorage.removeItem('cowrywise_paper_celebrated');
+      }
+    }
+  }, [summary, hasCelebrated]);
 
   useEffect(() => {
     // Refresh portfolio values periodically
@@ -40,6 +67,12 @@ export const PaperDashboard: React.FC<PaperDashboardProps> = ({
       updateMilestone('tracked', true);
       setIsRefreshing(false);
     }, 800);
+  };
+
+  const handleCopyCode = () => {
+    navigator.clipboard.writeText("PAPERGRAD");
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   const handleAddFunds = () => {
@@ -179,11 +212,29 @@ export const PaperDashboard: React.FC<PaperDashboardProps> = ({
 
               {isAllCompleted ? (
                 <div style={styles.graduatedBox}>
-                  <Award size={36} color="var(--c-gainer-text)" style={{ marginBottom: '8px' }} />
-                  <h4 style={styles.graduatedTitle}>Qualified Investor!</h4>
+                  <div style={styles.goldBadgeContainer}>
+                    <Award size={48} color="hsl(45, 90%, 45%)" />
+                  </div>
+                  <h4 style={styles.graduatedTitle}>Graduated Investor!</h4>
                   <p style={styles.graduatedDesc}>
-                    Awesome! You completed all practice milestones, researched key statistics, executed mock orders, and analyzed P/E ratios. You are now ready to start real stock investments!
+                    Outstanding! You've successfully completed your Cowrywise practice path. You've mastered asset research, placed mock orders, and analyzed P/E ratios in real time.
                   </p>
+                  
+                  <div style={styles.promoContainer}>
+                    <span style={styles.promoLabel}>Graduation Reward (100% Fee Waiver):</span>
+                    <div style={styles.codeRow}>
+                      <div style={styles.codeBox}>
+                        <span style={styles.codeText}>PAPERGRAD</span>
+                      </div>
+                      <button style={styles.copyBtn} onClick={handleCopyCode}>
+                        {copied ? <Check size={16} color="var(--c-gainer-text)" /> : <Clipboard size={16} />}
+                      </button>
+                    </div>
+                  </div>
+
+                  <button style={styles.startRealBtn} onClick={onExitPaperMode}>
+                    Claim Waiver & Start Real Portfolio <ArrowRight size={16} style={{ marginLeft: '6px' }} />
+                  </button>
                 </div>
               ) : (
                 <div style={styles.milestoneList}>
@@ -834,19 +885,99 @@ const styles: Record<string, React.CSSProperties> = {
   graduatedBox: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
+    alignItems: 'stretch',
     textAlign: 'center',
-    padding: '12px 0',
+    padding: '20px',
+    background: 'linear-gradient(135deg, hsl(45, 90%, 96%) 0%, hsl(45, 95%, 98%) 100%)',
+    borderRadius: '16px',
+    border: '1px solid hsl(45, 70%, 80%)',
+    boxSizing: 'border-box',
+    boxShadow: 'var(--shadow-subtle)',
+  },
+  goldBadgeContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: '12px',
   },
   graduatedTitle: {
-    fontSize: '16px',
-    fontWeight: '700',
-    color: 'var(--c-gainer-text)',
-    margin: '0 0 6px 0',
+    fontSize: '18px',
+    fontWeight: '800',
+    color: 'hsl(45, 90%, 25%)',
+    margin: '0 0 8px 0',
+    fontFamily: 'var(--font-family-display)',
+    letterSpacing: '-0.3px',
   },
   graduatedDesc: {
     fontSize: '12px',
+    color: 'hsl(45, 50%, 30%)',
+    lineHeight: '1.5',
+    marginBottom: '20px',
+  },
+  promoContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    border: '1px dashed hsl(45, 60%, 75%)',
+    borderRadius: '12px',
+    padding: '14px',
+    marginBottom: '20px',
+    boxSizing: 'border-box',
+    textAlign: 'left',
+  },
+  promoLabel: {
+    fontSize: '11px',
+    fontWeight: '700',
+    color: 'hsl(45, 70%, 25%)',
+    textTransform: 'uppercase',
+    letterSpacing: '0.5px',
+    display: 'block',
+    marginBottom: '8px',
+  },
+  codeRow: {
+    display: 'flex',
+    gap: '8px',
+  },
+  codeBox: {
+    flex: 1,
+    height: '42px',
+    borderRadius: '10px',
+    backgroundColor: '#ffffff',
+    border: '1px solid hsl(45, 40%, 85%)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  codeText: {
+    fontSize: '15px',
+    fontWeight: '800',
+    color: 'var(--c-primary)',
+    letterSpacing: '1px',
+  },
+  copyBtn: {
+    width: '42px',
+    height: '42px',
+    borderRadius: '10px',
+    border: '1px solid hsl(45, 40%, 85%)',
+    backgroundColor: '#ffffff',
     color: 'var(--c-text-secondary)',
-    lineHeight: '1.4',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    transition: 'all var(--transition-fast)',
+  },
+  startRealBtn: {
+    backgroundColor: 'var(--c-active)',
+    color: '#ffffff',
+    border: 'none',
+    borderRadius: '16px',
+    padding: '14px 20px',
+    fontSize: '14px',
+    fontWeight: '700',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    boxShadow: '0 4px 12px rgba(0, 102, 245, 0.25)',
+    transition: 'all var(--transition-fast)',
   },
 };
