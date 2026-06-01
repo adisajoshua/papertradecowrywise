@@ -61,7 +61,7 @@ Because the Paper Trading interface is **visually identical** to the real-money 
 Upon completing the milestones, the transition is seamless: the "Graduation Certificate" provides a single tap to switch the view to "Real Mode." Because they have already mastered this exact screen layout, the user's navigational anxiety is reduced to zero.
 
 ### Part B: Incentive Rationale (The Sunk Cost Reward)
-Gaining confidence is not enough; we must also overcome the financial activation barrier. This strategy proposes a **Trade Fee Waiver** (e.g., zero commissions on their first 3 transactions) as the graduation reward:
+Gaining confidence is not enough; the platform must also overcome the financial activation barrier. This strategy proposes a **Trade Fee Waiver** (e.g., zero commissions on their first 3 transactions) as the graduation reward:
 * **The Endowment Effect:** Because the user had to "work" to unlock this reward by completing the 5 practice milestones, they assign a high perceived value to it. 
 * **Loss Aversion:** If they graduate but do not open a funded account, this hard-earned waiver will expire. This triggers standard loss aversion and sunk-cost psychology—users are highly motivated to use a reward they feel they have already "paid for" with their time and effort.
 * **Instant Gratification:** Placing the reward CTA directly on the graduation card captures them at the moment of highest enthusiasm and confidence, converting them before cognitive friction sets in.

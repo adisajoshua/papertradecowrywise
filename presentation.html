@@ -485,8 +485,7 @@
   <header>
     <div class="logo-block">
       <div class="logo-icon">C</div>
-      <span class="logo-text">Cowrywise "Paper Trade"</span>
-      <span class="logo-tag">Interactive Case Study</span>
+      <span class="logo-text">Cowrywise "Paper Trade" Feature Exploration Presentation by Adisa Joshua</span>
     </div>
     <div class="header-actions">
       <a href="strategy.html" class="header-link" target="_blank">Read Strategy Case Study</a>
@@ -502,9 +501,9 @@
 
       <div class="slide-deck">
         
-        <!-- Slide 1: The Problem & Strategic Hook -->
+        <!-- Slide 1: The Problem Space -->
         <div class="slide active" data-state="ONBOARDING">
-          <span class="slide-tag">01. Strategy Hook</span>
+          <span class="slide-tag">01. The Problem Space</span>
           <h2 class="slide-title">Active vs. Passive Financial Learning</h2>
           <p class="slide-intro">
             Traditional wealth platforms educate users via passive resources (blogs, videos). Users read "How Stocks Work" but close the app without acting because real money stakes create high friction.
@@ -520,8 +519,8 @@
             <div class="bullet-item">
               <div class="bullet-num">2</div>
               <div class="bullet-text-container">
-                <span class="bullet-header">The "How Might We" Opportunity</span>
-                <span class="bullet-desc">How might we help users build execution confidence in real-time and learn about stocks in a way that is active, hands-on, and risk-free?</span>
+                <span class="bullet-header">The Core Opportunity</span>
+                <span class="bullet-desc">How might I help users build execution confidence in real-time and learn about stocks in a way that is active, hands-on, and risk-free?</span>
               </div>
             </div>
           </div>
@@ -530,44 +529,72 @@
           </div>
         </div>
 
-        <!-- Slide 2: Solution Overview -->
+        <!-- Slide 2: Proposed Strategy & Rationale -->
         <div class="slide" data-state="ONBOARDING">
-          <span class="slide-tag">02. Solution Overview</span>
-          <h2 class="slide-title">Solution Pillars: Embedded Education</h2>
+          <span class="slide-tag">02. Proposed Strategy</span>
+          <h2 class="slide-title">Risk-Free Simulated Sandbox</h2>
           <p class="slide-intro">
-            The "Paper Trade" sandbox bridges the gap between financial theory and practical execution by embedding a mock environment directly within the native iOS experience.
+            To bridge the confidence gap, this strategy proposes embedding a visually identical, risk-free practicing sandbox directly inside the native app.
           </p>
           <div class="bullet-list">
             <div class="bullet-item">
               <div class="bullet-num">1</div>
               <div class="bullet-text-container">
-                <span class="bullet-header">Spotlight Guidance</span>
-                <span class="bullet-desc">A 4-step spotlight tour focuses the user's attention on key areas on first launch.</span>
+                <span class="bullet-header">Key Assumptions</span>
+                <span class="bullet-desc">Users actually want to invest but are held back by fear; confidence gained in mock environments translates to real-world trading; KYC is pre-completed.</span>
               </div>
             </div>
             <div class="bullet-item">
               <div class="bullet-num">2</div>
               <div class="bullet-text-container">
-                <span class="bullet-header">Terminology & Sliders</span>
-                <span class="bullet-desc">Tapable metrics trigger bottom-sheet explainers with interactive slider calculators.</span>
+                <span class="bullet-header">Strategic Rationale</span>
+                <span class="bullet-desc">By replicating the exact production trading UI, mock trades build muscle memory, reducing navigational anxiety to zero when switching to real mode.</span>
+              </div>
+            </div>
+          </div>
+          <div class="action-callout">
+            👉 <strong>Interactive Action:</strong> Tap <strong>"Next Step →"</strong> below to proceed to the solution overview.
+          </div>
+        </div>
+
+        <!-- Slide 3: Solution Overview & What Was Done -->
+        <div class="slide" data-state="ONBOARDING">
+          <span class="slide-tag">03. Solution Overview</span>
+          <h2 class="slide-title">Embedded Financial Education</h2>
+          <p class="slide-intro">
+            I built a fully functional React + TypeScript prototype to explore how to integrate educational guidance directly at the point of trade execution.
+          </p>
+          <div class="bullet-list">
+            <div class="bullet-item">
+              <div class="bullet-num">1</div>
+              <div class="bullet-text-container">
+                <span class="bullet-header">Spotlight & Guides</span>
+                <span class="bullet-desc">Anchors user attention to critical workspace zones on first launch, reducing Day-1 dashboard bounces.</span>
+              </div>
+            </div>
+            <div class="bullet-item">
+              <div class="bullet-num">2</div>
+              <div class="bullet-text-container">
+                <span class="bullet-header">Valuation Math & Sliders</span>
+                <span class="bullet-desc">Replaces dry static figures with interactive slider bottom sheets to demystify complex multiples like P/E.</span>
               </div>
             </div>
             <div class="bullet-item">
               <div class="bullet-num">3</div>
               <div class="bullet-text-container">
-                <span class="bullet-header">Milestone Loops</span>
-                <span class="bullet-desc">A gamified dashboard checklist keeps users engaged, leading to a Graduation Reward card.</span>
+                <span class="bullet-header">Milestone Checklist & Reward</span>
+                <span class="bullet-desc">Gamifies practice with a checklist that unlocks a Trade Fee Waiver, driving transition to real investing.</span>
               </div>
             </div>
           </div>
           <div class="action-callout">
-            👉 <strong>Interactive Action:</strong> Tap <strong>"Next Step →"</strong> below to proceed to the onboarding setup card.
+            👉 <strong>Interactive Action:</strong> Tap <strong>"Next Step →"</strong> below to view the onboarding setup card.
           </div>
         </div>
 
-        <!-- Slide 3: Onboarding Setup (Realistic Capital) -->
+        <!-- Slide 4: Onboarding Setup (Realistic Capital) -->
         <div class="slide" data-state="ONBOARDING">
-          <span class="slide-tag">03. Onboarding Setup</span>
+          <span class="slide-tag">04. Onboarding Setup</span>
           <h2 class="slide-title">Realistic Anchoring vs. Abstract Millions</h2>
           <p class="slide-intro">
             Instead of starting users with a generic "₦1 Million" mock balance, the onboarding prompts them to set a capital ceiling matched to their actual savings capacity.
@@ -583,7 +610,7 @@
             <div class="bullet-item">
               <div class="bullet-num">2</div>
               <div class="bullet-text-container">
-                <span class="bullet-header">Aspect Validation Range</span>
+                <span class="bullet-header">Input Validation Range</span>
                 <span class="bullet-desc">The simulation restricts capital inputs (₦5,000 to ₦10,000,000) to keep user expectations realistic.</span>
               </div>
             </div>
@@ -593,9 +620,9 @@
           </div>
         </div>
 
-        <!-- Slide 4: Spotlight Guided Tour -->
+        <!-- Slide 5: Guided Tour -->
         <div class="slide" data-state="TOUR_BANNER">
-          <span class="slide-tag">04. Onboarding Guidance</span>
+          <span class="slide-tag">05. Onboarding Guidance</span>
           <h2 class="slide-title">Focus & Spotlight Onboarding</h2>
           <p class="slide-intro">
             A 4-step guided spotlight tour dims the screen to focus user attention on critical workspace zones, preventing Day-1 dashboard bounces.
@@ -621,9 +648,9 @@
           </div>
         </div>
 
-        <!-- Slide 5: Milestone Checklist -->
+        <!-- Slide 6: Milestone Checklist -->
         <div class="slide" data-state="DASHBOARD">
-          <span class="slide-tag">05. Engagement Loops</span>
+          <span class="slide-tag">06. Engagement Loops</span>
           <h2 class="slide-title">The "Practice Journey" Checklist</h2>
           <p class="slide-intro">
             Simulators often become empty dashboards where users bounce. This proposal integrates an interactive milestone card that gamifies user activation.
@@ -649,12 +676,12 @@
           </div>
         </div>
 
-        <!-- Slide 6: Sliders & Metaphors -->
+        <!-- Slide 7: Sliders & Metaphors -->
         <div class="slide" data-state="STOCK_DETAIL">
-          <span class="slide-tag">06. Active Learning</span>
+          <span class="slide-tag">07. Active Learning</span>
           <h2 class="slide-title">Interactive Sliders & Metaphors</h2>
           <p class="slide-intro">
-            Traditional statistics grids present dry mathematical figures. We replaced them with a balanced grid where metrics trigger custom bottom-sheet explanations.
+            Traditional statistics grids present dry mathematical figures. This design replaces them with a balanced grid where metrics trigger custom bottom-sheet explanations.
           </p>
           <div class="bullet-list">
             <div class="bullet-item">
@@ -677,9 +704,9 @@
           </div>
         </div>
 
-        <!-- Slide 7: Graduation & Conversion Loop -->
+        <!-- Slide 8: Graduation & Conversion Loop -->
         <div class="slide" data-state="REPORT">
-          <span class="slide-tag">07. Conversion Hook</span>
+          <span class="slide-tag">08. Conversion Hook</span>
           <h2 class="slide-title">Graduation Rewards & Conversion</h2>
           <p class="slide-intro">
             The funnel transitions users from practice to real-money investing through a value-generating threshold milestone.
@@ -705,10 +732,10 @@
           </div>
         </div>
 
-        <!-- Slide 8: Strategic Impact & Conclusion -->
+        <!-- Slide 9: Expected Outcomes & Conclusion -->
         <div class="slide" data-state="REPORT">
-          <span class="slide-tag">08. outcomes & conclusion</span>
-          <h2 class="slide-title">Strategic Impact & Conclusion</h2>
+          <span class="slide-tag">09. Outcomes & Conclusion</span>
+          <h2 class="slide-title">Expected Outcomes & Strategic Impact</h2>
           <p class="slide-intro">
             Transitioning users from passive readers to active executors converts pre-educated leads at a much lower customer acquisition cost (CAC).
           </p>
@@ -716,21 +743,21 @@
             <div class="bullet-item">
               <div class="bullet-num">1</div>
               <div class="bullet-text-container">
-                <span class="bullet-header">Conversion Lift (15-20%)</span>
-                <span class="bullet-desc">Significant uplift in real stock activations as confidence and muscle memory build.</span>
+                <span class="bullet-header">Conversion Lift & CAC</span>
+                <span class="bullet-desc">A target 15–20% increase in real stock validations, with pre-qualified leads depositing higher first-time values.</span>
               </div>
             </div>
             <div class="bullet-item">
               <div class="bullet-num">2</div>
               <div class="bullet-text-container">
-                <span class="bullet-header">Reduced Support Load (30%)</span>
-                <span class="bullet-desc">Contextual explanations answer basic terminology questions at the point of action.</span>
+                <span class="bullet-header">Reduced Support & Panics</span>
+                <span class="bullet-desc">The contextual explainer sheets act as a first line of support, reducing support tickets by 30% and panic selling during downturns.</span>
               </div>
             </div>
             <div class="bullet-item">
               <div class="bullet-num">3</div>
               <div class="bullet-text-container">
-                <span class="bullet-header">Summary Conclusion</span>
+                <span class="bullet-header">Conclusion</span>
                 <span class="bullet-desc">The risk-free simulator bridges the chasm between savings and stock investing, driving long-term user LTV and retention.</span>
               </div>
             </div>
@@ -753,6 +780,7 @@
           <div class="indicator-dot" onclick="gotoSlide(5)"></div>
           <div class="indicator-dot" onclick="gotoSlide(6)"></div>
           <div class="indicator-dot" onclick="gotoSlide(7)"></div>
+          <div class="indicator-dot" onclick="gotoSlide(8)"></div>
         </div>
         <div class="nav-buttons">
           <button class="nav-btn" id="prev-btn" onclick="prevSlide()" disabled>← Previous</button>

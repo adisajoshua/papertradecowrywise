@@ -84,10 +84,10 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
       <div
         style={{
           ...styles.spotlight,
-          top: current.top,
-          bottom: current.bottom,
-          left: current.left,
-          right: current.right,
+          top: current.top !== undefined ? current.top : 'auto',
+          bottom: current.bottom !== undefined ? current.bottom : 'auto',
+          left: current.left !== undefined ? current.left : 'auto',
+          right: current.right !== undefined ? current.right : 'auto',
           width: current.width,
           height: current.height,
           borderRadius: current.borderRadius || '8px',
@@ -101,9 +101,9 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
       <div
         style={{
           ...styles.popover,
-          top: current.popoverTop,
-          bottom: current.popoverBottom,
-          left: current.popoverLeft,
+          top: current.popoverTop !== undefined ? current.popoverTop : 'auto',
+          bottom: current.popoverBottom !== undefined ? current.popoverBottom : 'auto',
+          left: current.popoverLeft !== undefined ? current.popoverLeft : 'auto',
         }}
       >
         <div style={styles.header}>

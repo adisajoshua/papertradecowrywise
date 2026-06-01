@@ -161,6 +161,7 @@
       font-size: 16px;
       margin-bottom: 22px;
       color: var(--c-text-primary);
+      text-align: justify;
     }
 
     strong {
@@ -325,7 +326,8 @@
     }
 
     .lightbox-content {
-      max-width: 90%;
+      width: 90%;
+      max-width: 1100px;
       max-height: 85%;
       background-color: #ffffff;
       border-radius: 20px;
@@ -403,11 +405,11 @@
       <p class="article-subtitle">How to bridge the execution confidence gap, convert disciplined savers into stock market investors, and design an active risk-free sandbox.</p>
       
       <div class="author-meta">
-        <div class="author-avatar">PM</div>
+        <div class="author-avatar">AJ</div>
         <div>
-          <span class="author-name">Product Strategy Team</span>
+          <span class="author-name">Adisa Joshua</span>
           <br>
-          <span>5 min read • June 2026</span>
+          <span>7 min read • June 2026</span>
         </div>
       </div>
     </header>
@@ -423,7 +425,7 @@
       </p>
       
       <blockquote>
-        <p><strong>The Core Challenge:</strong> How might we help users build execution confidence in real-time and learn about stocks in a way that is active, hands-on, and risk-free?</p>
+        <p><strong>The Core Challenge:</strong> How might I help users build execution confidence in real-time and learn about stocks in a way that is active, hands-on, and risk-free?</p>
       </blockquote>
       
       <p>
@@ -484,7 +486,7 @@
 
       <h3>Part B: Incentive Rationale (The Sunk Cost Reward)</h3>
       <p>
-        Gaining confidence is not enough; we must also overcome the financial activation barrier. This strategy proposes a <strong>Trade Fee Waiver</strong> (e.g., zero commissions on their first 3 transactions) as the graduation reward:
+        Gaining confidence is not enough; the platform must also overcome the financial activation barrier. This strategy proposes a <strong>Trade Fee Waiver</strong> (e.g., zero commissions on their first 3 transactions) as the graduation reward:
       </p>
       <ul>
         <li><strong>The Endowment Effect:</strong> Because the user had to "work" to unlock this reward by completing the 5 practice milestones, they assign a high perceived value to it.</li>
@@ -575,23 +577,59 @@
 
     <!-- Section 6 -->
     <section>
-      <h2>6. Assumptions, Risks & Testing</h2>
-      <h3>Key Assumptions Made</h3>
-      <ol>
-        <li><strong>Desire to Learn:</strong> Users want to invest in stocks but are held back by fear/lack of knowledge, not a lack of capital.</li>
-        <li><strong>Transferable Confidence:</strong> Confidence gained in a mock environment will reliably translate to real-money environments.</li>
-      </ol>
-      
-      <h3>Tradeoffs & Risks</h3>
+      <h2>6. Key Assumptions Made</h2>
+      <p>This strategy relies on the following structural assumptions:</p>
       <ul>
-        <li><strong>Engineering Effort:</strong> Building a mock ledger takes development resources. <em>Mitigation: Using this high-fidelity prototype as a quick alignment tool for stakeholders before committing backend resources.</em></li>
-        <li><strong>Data Costs:</strong> Simulator requests increase load on real-time price feeds. <em>Mitigation: Implementing strict rate-limiting on mock updates.</em></li>
+        <li><strong>Desire to Learn:</strong> Users actually want to invest in stocks but are held back by fear/lack of knowledge, not a lack of capital.</li>
+        <li><strong>Transferable Confidence:</strong> Confidence gained in a mock environment will reliably translate to real-money environments.</li>
+        <li><strong>KYC Compliance:</strong> The target user cohort has already completed all standard platform KYC requirements during their savings setup, removing account-opening verification friction from this specific conversion funnel.</li>
+        <li><strong>Market Favorable Conditions:</strong> If a user's paper portfolio performs poorly due to a market downturn during their 7-day trial, they may be discouraged from investing. This strategy assumes the contextual education (teaching holding periods) will mitigate this panic.</li>
       </ul>
+    </section>
+
+    <!-- Section 7 -->
+    <section>
+      <h2>7. Tradeoffs & Risks</h2>
+      <ul>
+        <li><strong>Engineering Effort vs. Core Product:</strong> Building a mock ledger takes engineering resources away from real-money features. <em>The Tradeoff: The long-term LTV of an educated investor heavily outweighs the short-term development cost of the mock ledger.</em></li>
+        <li><strong>Simulator vs. Seriousness:</strong> If the feature feels too game-like, users may take wild risks they wouldn't take in real life, learning bad habits. <em>Mitigation: Enforcing strict minimum/maximum starting balances and realistic pricing constraints.</em></li>
+        <li><strong>Data Costs:</strong> Allowing thousands of users to mock-trade means more hits to real-time price feeds and WebSockets. This is a negative risk factor, as it could dramatically increase 3rd-party data provider costs without guaranteeing immediate revenue. This requires rate-limiting considerations from engineering.</li>
+      </ul>
+    </section>
+
+    <!-- Section 8 -->
+    <section>
+      <h2>8. Success & Failure Metrics</h2>
+      <p>To evaluate if the strategy is working, the platform will track the following KPIs:</p>
       
-      <h3>Rollout Strategy</h3>
-      <p>
-        Test the feature with a cohort of **"Disciplined Savers"** (users with consistent savings but no stock accounts) and **"New Sign-ups"** to monitor activation speed and conversion lift against historical baselines.
-      </p>
+      <h3>🟢 Success Signals (KPIs)</h3>
+      <ul>
+        <li><strong>Activation Rate:</strong> % of users who set a virtual balance who successfully execute their first mock order.</li>
+        <li><strong>Education Engagement:</strong> Number of interactions with the tapable 'Asset Metrics' (e.g., viewing the P/E ratio formula or bottom-sheet insights) per mock trade session.</li>
+        <li><strong>The North Star (Conversion Rate):</strong> % of paper traders who convert to a live, funded investment account within 30 days of their first mock trade.</li>
+        <li><strong>Support Load:</strong> A reduction in basic "How do stocks work?" customer support tickets.</li>
+      </ul>
+
+      <h3>🔴 Failure Signals</h3>
+      <ul>
+        <li><strong>High Setup Drop-off:</strong> Users open the "Set Virtual Balance" modal but bounce before completing it (indicating the value prop isn't clear).</li>
+        <li><strong>The "Dead Portfolio":</strong> Users execute one mock trade and never check the dashboard again.</li>
+        <li><strong>Zero Conversion:</strong> High engagement in the practice environment, but 0% transition to real money. This would indicate a highly utilized simulator that failed in its primary objective as a sales funnel to real investments.</li>
+      </ul>
+    </section>
+
+    <!-- Section 9 -->
+    <section>
+      <h2>9. Phased Rollout & Testing Strategy</h2>
+      <p>To properly test this theory before a general release, I propose a phased rollout targeting two very specific user cohorts:</p>
+      <ul>
+        <li><strong>Segment A (The "Disciplined Saver"):</strong> Users who have maintained consistent saving habits for 3+ months but have <em>never</em> purchased a stock.
+          <br><em>Rationale:</em> These users already trust the platform and have capital available, but lack execution confidence in equities.
+        </li>
+        <li><strong>Segment B (The "New Sign-up"):</strong> Brand new users going through their first week of onboarding.
+          <br><em>Rationale:</em> To test if immediate exposure to a risk-free simulator accelerates their time-to-first-investment compared to historical baselines.
+        </li>
+      </ul>
     </section>
 
     <!-- Prototype Footnote -->
@@ -602,7 +640,7 @@
         To validate this strategic proposal and prove its layout viability, I built a fully functional interactive prototype using React, TypeScript, and <strong>Antigravity</strong>. 
       </p>
       <p>
-        Leveraging a design-led product management approach allowed us to construct a high-fidelity visual showcase of the entire product flow (onboarding tour, metrics explainers, valuation calculators, and graduation triggers). This prototype enabled the team to align leadership and design stakeholders, validate usability constraints, and secure strategic buy-in without dedicating backend or database engineering resources to the proof-of-concept phase.
+        Leveraging my design-led product management approach allowed me to construct a high-fidelity visual showcase of the entire product flow (onboarding tour, metrics explainers, valuation calculators, and graduation triggers). This prototype enabled me to align leadership and design stakeholders, validate usability constraints, and secure strategic buy-in without dedicating backend or database engineering resources to the proof-of-concept phase.
       </p>
     </footer>
 
@@ -612,7 +650,7 @@
   <div id="lightbox-modal" class="lightbox-modal" onclick="closeLightbox()">
     <div class="lightbox-content" onclick="event.stopPropagation()">
       <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
-      <div id="lightbox-target" style="width: 100%; display: flex; justify-content: center;"></div>
+      <div id="lightbox-target" style="width: 100%; display: flex; justify-content: center; align-items: center;"></div>
     </div>
   </div>
 
@@ -640,7 +678,15 @@
           container.addEventListener('click', () => {
             const svg = container.querySelector('svg');
             if (svg) {
-              openLightbox(svg.outerHTML);
+              // Clone SVG and reset style and size limitations to allow full scale width
+              const cloned = svg.cloneNode(true);
+              cloned.removeAttribute('style');
+              cloned.removeAttribute('width');
+              cloned.removeAttribute('height');
+              cloned.style.width = '100%';
+              cloned.style.height = 'auto';
+              cloned.style.maxWidth = '1000px';
+              openLightbox(cloned.outerHTML);
             }
           });
         });
