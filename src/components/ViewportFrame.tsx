@@ -7,7 +7,7 @@ interface ViewportFrameProps {
 export const ViewportFrame: React.FC<ViewportFrameProps> = ({ children }) => {
   const isInsideIframe = React.useMemo(() => {
     try {
-      return window.self !== window.top;
+      return window.self !== window.top || window.location.search.includes('embed=true');
     } catch (e) {
       return true;
     }

@@ -356,19 +356,33 @@
     }
 
     /* 
+      phone-wrapper allocates exactly the scaled space, preventing layout clipping 
+      from the parent container overflow hidden bounds.
+    */
+    .phone-wrapper {
+      width: calc(min(100vh - 120px, 844px) * 390 / 844);
+      height: min(100vh - 120px, 844px);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* 
       The iframe-container wraps the React ViewportFrame (which has width: 390px, height: 844px).
-      It dynamically scales the entire React component using transform scale to fit any viewport height.
+      It is absolute-positioned at full size, and scaled to fit the wrapper bounds.
     */
     .iframe-container {
       width: 390px;
       height: 844px;
+      position: absolute;
       border-radius: 40px;
       overflow: hidden;
       box-shadow: 0 30px 60px rgba(10, 46, 101, 0.12);
       background: #FFFFFF;
       transform-origin: center center;
       transform: scale(calc(min(100vh - 120px, 844px) / 844));
-      flex-shrink: 0;
     }
 
     .iframe-container iframe {
@@ -459,6 +473,78 @@
       cursor: pointer;
     }
 
+    /* Fullscreen Prototype Modal styling */
+    .prototype-modal {
+      display: none;
+      position: fixed;
+      z-index: 5000;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .prototype-modal.active {
+      display: flex;
+    }
+
+    .prototype-modal-backdrop {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(10, 46, 101, 0.4);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .prototype-modal-content {
+      position: relative;
+      z-index: 5001;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      animation: zoom-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    .prototype-modal-close {
+      background-color: var(--c-navy);
+      color: white;
+      border: 1px solid var(--c-border);
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 13px;
+      padding: 10px 24px;
+      border-radius: 20px;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(10, 46, 101, 0.2);
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      outline: none;
+    }
+
+    .prototype-modal-close:hover {
+      background-color: var(--c-blue);
+      transform: translateY(-1px);
+    }
+
+    /* Low opacity states for presentation background */
+    body.modal-open header,
+    body.modal-open .container {
+      opacity: 0.15;
+      pointer-events: none;
+    }
+
+    header, .container {
+      transition: opacity 0.3s ease;
+    }
+
     /* Keyframes */
     @keyframes fade-in {
       from { opacity: 0; transform: translateY(10px); }
@@ -489,7 +575,7 @@
     </div>
     <div class="header-actions">
       <a href="strategy.html" class="header-link" target="_blank">Read Strategy Case Study</a>
-      <button class="primary-cta-btn" onclick="resetSandbox()">Play Prototype (Reset) ↺</button>
+      <button class="primary-cta-btn" onclick="openPrototypeModal()">Play Prototype 📱</button>
     </div>
   </header>
 
@@ -796,8 +882,10 @@
         This wrapper is dynamically scaled in height using CSS min() logic, 
         ensuring the built-in React ViewportFrame (iPhone Frame) displays 100% of its details without cuts.
       -->
-      <div class="iframe-container">
-        <iframe id="prototype-iframe" src="/" title="Interactive Prototype Shell"></iframe>
+      <div class="phone-wrapper">
+        <div class="iframe-container">
+          <iframe id="prototype-iframe" src="/?embed=true" title="Interactive Prototype Shell"></iframe>
+        </div>
       </div>
       <div class="phone-status-overlay">
         <div class="status-dot"></div>
@@ -805,6 +893,19 @@
       </div>
     </div>
 
+  </div>
+
+  <!-- Fullscreen Prototype Sandbox Modal -->
+  <div id="prototype-modal" class="prototype-modal">
+    <div class="prototype-modal-backdrop" onclick="closePrototypeModal()"></div>
+    <div class="prototype-modal-content">
+      <button class="prototype-modal-close" onclick="closePrototypeModal()">&times; Close Sandbox Mode</button>
+      <div class="phone-wrapper">
+        <div class="iframe-container">
+          <iframe id="modal-prototype-iframe" src="about:blank" title="Interactive Sandbox Modal"></iframe>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Mobile blocking overlay container -->
@@ -818,7 +919,7 @@
     </div>
   </div>
 
-  <!-- Script logic for presentation navigation -->
+  <!-- Script logic for presentation navigation and modal sandbox -->
   <script>
     let currentSlide = 0;
     const slides = document.querySelectorAll('.slide');
@@ -826,6 +927,7 @@
     const prevBtn = document.getElementById('prev-btn');
     const nextBtn = document.getElementById('next-btn');
     const iframe = document.getElementById('prototype-iframe');
+    const modalIframe = document.getElementById('modal-prototype-iframe');
 
     // Synchronize Iframe states based on current slide
     function syncIframeState() {
@@ -872,6 +974,7 @@
     }
 
     function nextSlide() {
+      if (document.body.classList.contains('modal-open')) return; // Disable slide navigation when playing in modal
       if (currentSlide === slides.length - 1) {
         currentSlide = 0;
       } else {
@@ -881,6 +984,7 @@
     }
 
     function prevSlide() {
+      if (document.body.classList.contains('modal-open')) return;
       if (currentSlide > 0) {
         currentSlide--;
         updateSlideDisplay();
@@ -888,24 +992,43 @@
     }
 
     function gotoSlide(idx) {
+      if (document.body.classList.contains('modal-open')) return;
       currentSlide = idx;
       updateSlideDisplay();
     }
 
-    // Reset Sandbox state via parent CTA
-    function resetSandbox() {
-      if (iframe && iframe.contentWindow) {
-        iframe.contentWindow.postMessage({
-          type: 'GOTO_STATE',
-          state: 'RESET'
-        }, '*');
-      }
-      currentSlide = 0;
-      updateSlideDisplay();
+    // Modal Prototype control logic
+    function openPrototypeModal() {
+      const modal = document.getElementById('prototype-modal');
+      // Load/Reload the modal prototype iframe on launch to start fresh
+      modalIframe.src = "/?embed=true";
+      modal.classList.add('active');
+      document.body.classList.add('modal-open');
+      document.body.style.overflow = 'hidden';
     }
 
-    // Keyboard navigation (arrows)
+    function closePrototypeModal() {
+      const modal = document.getElementById('prototype-modal');
+      modal.classList.remove('active');
+      document.body.classList.remove('modal-open');
+      document.body.style.overflow = '';
+      
+      // Blank out modal iframe to save memory/data feeds
+      modalIframe.src = "about:blank";
+      
+      // Resynchronize the slide preview iframe state
+      setTimeout(syncIframeState, 150);
+    }
+
+    // Keyboard navigation (arrows) and modal escape
     document.addEventListener('keydown', (e) => {
+      if (document.body.classList.contains('modal-open')) {
+        if (e.key === 'Escape') {
+          closePrototypeModal();
+        }
+        return; // Suppress slide navigation keys inside modal
+      }
+      
       if (e.key === 'ArrowRight' || e.key === 'Space') {
         nextSlide();
       } else if (e.key === 'ArrowLeft') {
