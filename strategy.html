@@ -34,10 +34,9 @@
       --c-blue: hsl(215, 100%, 48%);       /* #0066F5 - Brand Reassuring Blue */
       --c-blue-bg: hsl(215, 100%, 97%);    /* Light blue card backdrop */
       --c-bg: hsl(0, 0%, 100%);
-      --c-canvas: hsl(210, 20%, 98%);
-      --c-text-primary: hsl(216, 82%, 15%);
-      --c-text-secondary: hsl(240, 2%, 43%);
-      --c-border: hsl(220, 13%, 91%);
+      --c-text-primary: hsl(216, 30%, 18%);
+      --c-text-secondary: hsl(240, 2%, 45%);
+      --c-border: hsl(220, 13%, 90%);
       
       --c-gainer-bg: hsl(131, 72%, 94%);
       --c-gainer-text: hsl(142, 72%, 29%);
@@ -49,7 +48,6 @@
       --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       
       --shadow-subtle: 0 4px 20px rgba(10, 46, 101, 0.03);
-      --shadow-premium: 0 20px 40px rgba(10, 46, 101, 0.06);
     }
 
     * {
@@ -58,36 +56,25 @@
       padding: 0;
     }
 
+    /* Substack/Medium Style: Pure White Page Background and Flat borderless container */
     body {
       font-family: var(--font-body);
       color: var(--c-text-primary);
-      background-color: var(--c-canvas);
-      line-height: 1.6;
-      padding: 40px 20px;
+      background-color: var(--c-bg);
+      line-height: 1.65;
+      padding: 60px 20px;
     }
 
-    /* Article layout container */
     .article-container {
-      max-width: 780px;
+      max-width: 720px;
       margin: 0 auto;
       background: var(--c-bg);
-      border: 1px solid var(--c-border);
-      border-radius: 24px;
-      padding: 60px 80px;
-      box-shadow: var(--shadow-premium);
-    }
-
-    @media (max-width: 768px) {
-      .article-container {
-        padding: 40px 30px;
-        border-radius: 16px;
-      }
     }
 
     /* Header & Meta */
     .article-header {
       margin-bottom: 40px;
-      border-bottom: 1.5px solid var(--c-border);
+      border-bottom: 1px solid var(--c-border);
       padding-bottom: 30px;
     }
 
@@ -98,27 +85,27 @@
       font-family: var(--font-display);
       font-size: 11px;
       font-weight: 700;
-      padding: 6px 12px;
+      padding: 5px 12px;
       border-radius: 20px;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 0.8px;
       margin-bottom: 16px;
     }
 
     .article-title {
       font-family: var(--font-display);
-      font-size: 38px;
+      font-size: 40px;
       font-weight: 800;
-      line-height: 1.2;
+      line-height: 1.15;
       color: var(--c-navy);
-      letter-spacing: -1px;
+      letter-spacing: -1.2px;
       margin-bottom: 16px;
     }
 
     .article-subtitle {
-      font-size: 18px;
+      font-size: 19px;
       color: var(--c-text-secondary);
-      font-weight: 500;
+      font-weight: 400;
       line-height: 1.45;
       margin-bottom: 24px;
     }
@@ -132,8 +119,8 @@
     }
 
     .author-avatar {
-      width: 32px;
-      height: 32px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
       background-color: var(--c-navy);
       color: white;
@@ -152,31 +139,28 @@
     /* Content Typography */
     h2 {
       font-family: var(--font-display);
-      font-size: 24px;
+      font-size: 26px;
       font-weight: 700;
       color: var(--c-navy);
       margin-top: 48px;
       margin-bottom: 16px;
-      letter-spacing: -0.5px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+      letter-spacing: -0.6px;
     }
 
     h3 {
       font-family: var(--font-display);
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 700;
       color: var(--c-navy);
       margin-top: 32px;
       margin-bottom: 12px;
+      letter-spacing: -0.3px;
     }
 
     p {
-      font-size: 15px;
-      margin-bottom: 20px;
+      font-size: 16px;
+      margin-bottom: 22px;
       color: var(--c-text-primary);
-      text-align: justify;
     }
 
     strong {
@@ -190,58 +174,64 @@
     }
 
     li {
-      font-size: 15px;
-      margin-bottom: 8px;
+      font-size: 16px;
+      margin-bottom: 10px;
       color: var(--c-text-primary);
     }
 
-    /* Premium Blockquote / Callout box */
+    /* Substack Style Blockquote */
     blockquote {
-      border-left: 4px solid var(--c-blue);
-      background-color: var(--c-blue-bg);
-      padding: 18px 24px;
-      border-radius: 0 16px 16px 0;
-      margin: 24px 0;
-      font-size: 15px;
-      font-weight: 500;
-      color: var(--c-navy);
+      border-left: 3px solid var(--c-navy);
+      padding-left: 20px;
+      margin: 28px 0;
+      font-size: 18px;
+      font-style: italic;
+      color: var(--c-text-secondary);
     }
 
     blockquote p {
       margin-bottom: 0;
-      text-align: left;
+      font-family: var(--font-display);
+      font-weight: 500;
     }
 
-    /* Visual Diagram Containers */
+    /* Zoomable Diagram Container */
     .diagram-container {
-      background: #FAFAF9;
+      background: #FAFAFA;
       border: 1px solid var(--c-border);
-      border-radius: 16px;
-      padding: 30px;
+      border-radius: 12px;
+      padding: 24px;
       margin: 32px 0;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      cursor: zoom-in;
+      transition: all 0.2s ease-in-out;
       box-shadow: var(--shadow-subtle);
+    }
+
+    .diagram-container:hover {
+      border-color: var(--c-blue);
+      transform: translateY(-2px);
     }
 
     .diagram-title {
       font-family: var(--font-display);
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
       color: var(--c-text-secondary);
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
-    /* Grid cards for metric and layout sections */
+    /* Grid cards for outcomes */
     .impact-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 16px;
-      margin: 24px 0;
+      margin: 28px 0;
     }
 
     @media (max-width: 600px) {
@@ -252,22 +242,21 @@
 
     .impact-card {
       border: 1px solid var(--c-border);
-      border-radius: 16px;
+      border-radius: 12px;
       padding: 20px;
-      background-color: var(--c-bg);
-      box-shadow: var(--shadow-subtle);
+      background-color: #FAFAFA;
     }
 
     .impact-card-title {
       font-family: var(--font-display);
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 700;
       color: var(--c-navy);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .impact-card-desc {
-      font-size: 13px;
+      font-size: 14px;
       color: var(--c-text-secondary);
       margin-bottom: 0;
     }
@@ -276,23 +265,22 @@
     .showcase-badge-box {
       background: linear-gradient(135deg, var(--c-gold-bg) 0%, #fffbeb 100%);
       border: 1px solid var(--c-gold-border);
-      border-radius: 16px;
-      padding: 24px;
+      border-radius: 12px;
+      padding: 20px;
       margin: 32px 0;
       display: flex;
-      gap: 20px;
+      gap: 16px;
       align-items: flex-start;
-      box-shadow: var(--shadow-subtle);
     }
 
     .showcase-badge-icon {
-      font-size: 32px;
+      font-size: 28px;
       flex-shrink: 0;
       background: white;
-      border: 1.5px solid var(--c-gold-border);
-      border-radius: 12px;
-      width: 60px;
-      height: 60px;
+      border: 1px solid var(--c-gold-border);
+      border-radius: 10px;
+      width: 50px;
+      height: 50px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -300,41 +288,107 @@
 
     .showcase-badge-content h4 {
       font-family: var(--font-display);
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 800;
       color: var(--c-gold-text);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     .showcase-badge-content p {
-      font-size: 13px;
+      font-size: 13.5px;
       color: hsl(45, 50%, 25%);
       margin-bottom: 0;
-      text-align: left;
+    }
+
+    /* Lightbox Modal */
+    .lightbox-modal {
+      display: none;
+      position: fixed;
+      z-index: 10000;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background-color: rgba(10, 46, 101, 0.65);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .lightbox-modal.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .lightbox-content {
+      max-width: 90%;
+      max-height: 85%;
+      background-color: #ffffff;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: zoom-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--c-text-secondary);
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      transition: color 0.2s;
+      line-height: 1;
+      outline: none;
+    }
+
+    .lightbox-close:hover {
+      color: var(--c-navy);
+    }
+
+    .lightbox-content svg {
+      width: 100% !important;
+      height: auto !important;
+      max-height: 70vh !important;
+    }
+
+    @keyframes zoom-in {
+      from { transform: scale(0.9); }
+      to { transform: scale(1); }
     }
 
     /* Footnote */
     .footnote {
       margin-top: 60px;
       padding-top: 30px;
-      border-top: 1.5px solid var(--c-border);
-      font-size: 13px;
+      border-top: 1px solid var(--c-border);
+      font-size: 13.5px;
       color: var(--c-text-secondary);
     }
 
     .footnote h4 {
       font-family: var(--font-display);
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 700;
       color: var(--c-navy);
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .footnote p {
-      font-size: 13px;
+      font-size: 13.5px;
       color: var(--c-text-secondary);
       margin-bottom: 12px;
-      text-align: left;
     }
   </style>
 </head>
@@ -393,7 +447,7 @@
 
       <!-- User Journey Diagram -->
       <div class="diagram-container">
-        <span class="diagram-title">Visualized User Journey</span>
+        <span class="diagram-title">Visualized User Journey (Click to enlarge)</span>
         <div class="mermaid">
           graph TD
               A[Saver enters Invest Tab] --> B[Practice Mode Promo Card]
@@ -440,7 +494,7 @@
 
       <!-- Funnel Diagram -->
       <div class="diagram-container">
-        <span class="diagram-title">The Conversion Funnel Map</span>
+        <span class="diagram-title">The Conversion Funnel Map (Click to enlarge)</span>
         <div class="mermaid">
           graph TD
               subgraph Funnel Stage [Conversion Funnel]
@@ -553,6 +607,53 @@
     </footer>
 
   </article>
+
+  <!-- Lightbox Modal -->
+  <div id="lightbox-modal" class="lightbox-modal" onclick="closeLightbox()">
+    <div class="lightbox-content" onclick="event.stopPropagation()">
+      <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+      <div id="lightbox-target" style="width: 100%; display: flex; justify-content: center;"></div>
+    </div>
+  </div>
+
+  <!-- Lightbox Interaction logic -->
+  <script>
+    function openLightbox(htmlContent) {
+      const modal = document.getElementById('lightbox-modal');
+      const target = document.getElementById('lightbox-target');
+      target.innerHTML = htmlContent;
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden'; // Prevent main page scrolling
+    }
+
+    function closeLightbox() {
+      const modal = document.getElementById('lightbox-modal');
+      modal.classList.remove('active');
+      document.body.style.overflow = ''; // Restore main page scrolling
+    }
+
+    // Wait for Mermaid script to fully compile SVGs, then attach listeners
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const containers = document.querySelectorAll('.diagram-container');
+        containers.forEach(container => {
+          container.addEventListener('click', () => {
+            const svg = container.querySelector('svg');
+            if (svg) {
+              openLightbox(svg.outerHTML);
+            }
+          });
+        });
+      }, 1800); // 1.8s delay ensures Mermaid rendering has completed
+    });
+
+    // Close on Escape key press
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeLightbox();
+      }
+    });
+  </script>
 
 </body>
 </html>

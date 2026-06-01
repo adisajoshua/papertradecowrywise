@@ -34,7 +34,7 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
     setAmountStr(val.toString());
     setAnimateBounce(true);
     setTimeout(() => setAnimateBounce(false), 200);
-    setIsKeyboardOpen(true); // Open keyboard when pill is tapped
+    setIsKeyboardOpen(false); // Close keyboard when pill is tapped so CTA button is visible
   };
 
   const handleSubmit = () => {
