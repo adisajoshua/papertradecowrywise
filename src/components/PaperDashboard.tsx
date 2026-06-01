@@ -199,12 +199,12 @@ export const PaperDashboard: React.FC<PaperDashboardProps> = ({
                         1. Research a Stock
                       </span>
                       <span style={styles.milestoneDesc}>Select any ticker and check its key metrics.</span>
+                      {!currentMilestones.researched && (
+                        <button onClick={onOpenExplore} style={styles.milestoneCta}>
+                          Browse →
+                        </button>
+                      )}
                     </div>
-                    {!currentMilestones.researched && (
-                      <button onClick={onOpenExplore} style={styles.milestoneCta}>
-                        Browse →
-                      </button>
-                    )}
                   </div>
 
                   {/* Milestone 2: Valuation Math */}
@@ -219,12 +219,12 @@ export const PaperDashboard: React.FC<PaperDashboardProps> = ({
                         2. Analyze P/E Ratio
                       </span>
                       <span style={styles.milestoneDesc}>Tap the P/E Ratio cell in Stock detail to learn.</span>
+                      {!currentMilestones.calculated && (
+                        <button onClick={onOpenExplore} style={styles.milestoneCta}>
+                          Try Calculator →
+                        </button>
+                      )}
                     </div>
-                    {!currentMilestones.calculated && (
-                      <button onClick={onOpenExplore} style={styles.milestoneCta}>
-                        Try Calculator →
-                      </button>
-                    )}
                   </div>
 
                   {/* Milestone 3: Buy shares */}
@@ -239,12 +239,12 @@ export const PaperDashboard: React.FC<PaperDashboardProps> = ({
                         3. Buy Your First Stock
                       </span>
                       <span style={styles.milestoneDesc}>Purchase mock shares using your capital.</span>
+                      {!currentMilestones.bought && (
+                        <button onClick={onOpenExplore} style={styles.milestoneCta}>
+                          Buy shares →
+                        </button>
+                      )}
                     </div>
-                    {!currentMilestones.bought && (
-                      <button onClick={onOpenExplore} style={styles.milestoneCta}>
-                        Buy shares →
-                      </button>
-                    )}
                   </div>
 
                   {/* Milestone 4: Track updates */}
@@ -259,12 +259,12 @@ export const PaperDashboard: React.FC<PaperDashboardProps> = ({
                         4. Watch Ticker Fluctuations
                       </span>
                       <span style={styles.milestoneDesc}>Click the refresh button at the top header.</span>
+                      {!currentMilestones.tracked && (
+                        <button onClick={handleRefresh} style={styles.milestoneCta}>
+                          Refresh →
+                        </button>
+                      )}
                     </div>
-                    {!currentMilestones.tracked && (
-                      <button onClick={handleRefresh} style={styles.milestoneCta}>
-                        Refresh →
-                      </button>
-                    )}
                   </div>
 
                   {/* Milestone 5: Sell shares */}
@@ -279,10 +279,10 @@ export const PaperDashboard: React.FC<PaperDashboardProps> = ({
                         5. Sell to Realize Return
                       </span>
                       <span style={styles.milestoneDesc}>Sell shares of your position to lock in cash.</span>
+                      {!currentMilestones.sold && (
+                        <span style={styles.milestoneHint}>Buy first</span>
+                      )}
                     </div>
-                    {!currentMilestones.sold && (
-                      <span style={styles.milestoneHint}>Buy first</span>
-                    )}
                   </div>
                 </div>
               )}
@@ -786,20 +786,21 @@ const styles: Record<string, React.CSSProperties> = {
   },
   milestoneItem: {
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingBottom: '10px',
+    alignItems: 'flex-start',
+    padding: '12px 0',
     borderBottom: '0.5px solid var(--c-border)',
     boxSizing: 'border-box',
   },
   milestoneCheck: {
     marginRight: '12px',
     flexShrink: 0,
+    marginTop: '2px',
   },
   milestoneTextContainer: {
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
+    alignItems: 'flex-start',
     gap: '2px',
   },
   milestoneLabel: {
@@ -810,6 +811,7 @@ const styles: Record<string, React.CSSProperties> = {
   milestoneDesc: {
     fontSize: '10px',
     color: 'var(--c-text-secondary)',
+    lineHeight: '1.3',
   },
   milestoneCta: {
     border: 'none',
@@ -818,12 +820,16 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: '11px',
     fontWeight: '700',
     cursor: 'pointer',
-    padding: '4px 0',
+    padding: '2px 0 0 0',
+    marginTop: '4px',
+    alignSelf: 'flex-start',
   },
   milestoneHint: {
     fontSize: '10px',
     color: 'var(--c-text-secondary)',
     fontStyle: 'italic',
+    marginTop: '4px',
+    alignSelf: 'flex-start',
   },
   graduatedBox: {
     display: 'flex',
