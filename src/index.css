@@ -117,6 +117,7 @@ body {
 }
 
 /* Iframe specific overrides to prevent layout collapse and gray borders */
+html.in-iframe,
 body.in-iframe {
   background-color: transparent !important;
   display: block !important;

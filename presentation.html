@@ -496,9 +496,7 @@
       top: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(10, 46, 101, 0.4);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background-color: #FFFFFF;
     }
 
     .prototype-modal-content {
@@ -514,14 +512,14 @@
     .prototype-modal-close {
       background-color: var(--c-navy);
       color: white;
-      border: 1px solid var(--c-border);
+      border: none;
       font-family: var(--font-body);
       font-weight: 700;
-      font-size: 13px;
-      padding: 10px 24px;
-      border-radius: 20px;
+      font-size: 14px;
+      padding: 12px 28px;
+      border-radius: 24px;
       cursor: pointer;
-      box-shadow: 0 10px 25px rgba(10, 46, 101, 0.2);
+      box-shadow: 0 8px 24px rgba(10, 46, 101, 0.12);
       transition: all 0.2s;
       display: flex;
       align-items: center;
@@ -532,6 +530,7 @@
     .prototype-modal-close:hover {
       background-color: var(--c-blue);
       transform: translateY(-1px);
+      box-shadow: 0 12px 32px rgba(0, 102, 245, 0.2);
     }
 
     /* Low opacity states for presentation background */
@@ -899,7 +898,7 @@
   <div id="prototype-modal" class="prototype-modal">
     <div class="prototype-modal-backdrop" onclick="closePrototypeModal()"></div>
     <div class="prototype-modal-content">
-      <button class="prototype-modal-close" onclick="closePrototypeModal()">&times; Close Sandbox Mode</button>
+      <button class="prototype-modal-close" onclick="closePrototypeModal()">✕ Cancel & Return to Presentation</button>
       <div class="phone-wrapper">
         <div class="iframe-container">
           <iframe id="modal-prototype-iframe" src="about:blank" title="Interactive Sandbox Modal"></iframe>

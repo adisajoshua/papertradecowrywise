@@ -16,8 +16,10 @@ export const ViewportFrame: React.FC<ViewportFrameProps> = ({ children }) => {
   React.useEffect(() => {
     if (isInsideIframe) {
       document.body.classList.add('in-iframe');
+      document.documentElement.classList.add('in-iframe');
       return () => {
         document.body.classList.remove('in-iframe');
+        document.documentElement.classList.remove('in-iframe');
       };
     }
   }, [isInsideIframe]);

@@ -173,8 +173,8 @@ export const TradeFlow: React.FC<TradeFlowProps> = ({ stock, onClose, onSuccess 
           <div
             style={{
               ...styles.segmentIndicator,
-              left: tradeType === 'BUY' ? '2px' : 'calc(50% + 1px)',
-              width: 'calc(50% - 3px)',
+              left: tradeType === 'BUY' ? '3px' : 'calc(50% + 1px)',
+              width: 'calc(50% - 4px)',
             }}
           />
           <button
@@ -799,31 +799,32 @@ const styles: Record<string, React.CSSProperties> = {
   segmentContainer: {
     position: 'relative',
     width: '100%',
-    height: '40px',
-    borderRadius: '20px',
-    backgroundColor: '#F1F3F6',
+    height: '44px',
+    borderRadius: '22px',
+    backgroundColor: 'hsl(210, 16%, 95%)',
     margin: '0 0 16px 0',
-    padding: '2px',
+    padding: '3px',
     display: 'flex',
     boxSizing: 'border-box',
-    alignItems: 'center',
+    alignItems: 'stretch',
+    flexShrink: 0,
   },
   segmentIndicator: {
     position: 'absolute',
-    top: '2px',
-    bottom: '2px',
+    height: '38px',
+    top: '3px',
     backgroundColor: '#FFFFFF',
-    borderRadius: '18px',
-    boxShadow: '0px 2px 6px rgba(10, 46, 101, 0.08), 0px 1px 2px rgba(10, 46, 101, 0.04)',
+    borderRadius: '19px',
+    boxShadow: '0px 2px 6px rgba(10, 46, 101, 0.08), 0px 1px 3px rgba(10, 46, 101, 0.04)',
     transition: 'left var(--transition-medium) cubic-bezier(0.2, 0.8, 0.2, 1)',
     zIndex: 1,
   },
   segmentBtn: {
     flex: 1,
-    height: '100%',
     border: 'none',
     backgroundColor: 'transparent',
-    fontSize: '14px',
+    fontSize: '13px',
+    fontWeight: '600',
     cursor: 'pointer',
     outline: 'none',
     zIndex: 2,
@@ -832,6 +833,8 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: 'center',
     transition: 'color var(--transition-fast)',
   },
+
+
   ownedSharesIndicator: {
     fontSize: '12px',
     textAlign: 'center',
