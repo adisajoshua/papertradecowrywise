@@ -13,6 +13,8 @@ export const ViewportFrame: React.FC<ViewportFrameProps> = ({ children }) => {
     }
   }, []);
 
+  const [scale, setScale] = React.useState(1);
+
   React.useEffect(() => {
     if (isInsideIframe) {
       document.body.classList.add('in-iframe');
@@ -21,12 +23,44 @@ export const ViewportFrame: React.FC<ViewportFrameProps> = ({ children }) => {
         document.body.classList.remove('in-iframe');
         document.documentElement.classList.remove('in-iframe');
       };
+    } else {
+      const handleResize = () => {
+        // Phone frame target dimensions (390px x 844px) with 40px outer padding buffer (884px height)
+        const targetHeight = 844 + 40;
+        const targetWidth = 390 + 40;
+
+        const scaleHeight = window.innerHeight / targetHeight;
+        const scaleWidth = window.innerWidth / targetWidth;
+
+        // Take the smaller scale to maintain aspect ratio, capped at 1.0
+        const calculatedScale = Math.min(scaleHeight, scaleWidth, 1);
+        setScale(calculatedScale);
+      };
+
+      handleResize();
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
     }
   }, [isInsideIframe]);
 
   const outerContainerStyle: React.CSSProperties = {
     ...styles.outerContainer,
-    ...(isInsideIframe ? { padding: 0, backgroundColor: 'transparent', height: '100%' } : {})
+    ...(isInsideIframe ? { padding: 0, backgroundColor: 'transparent', height: '100%' } : { overflow: 'hidden' })
+  };
+
+  const scaledWrapperStyle: React.CSSProperties = isInsideIframe ? {
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+  } : {
+    width: `${390 * scale}px`,
+    height: `${844 * scale}px`,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+    flexShrink: 0,
   };
 
   const phoneFrameStyle: React.CSSProperties = {
@@ -37,51 +71,57 @@ export const ViewportFrame: React.FC<ViewportFrameProps> = ({ children }) => {
       width: '100%',
       height: '100%',
       border: 'none'
-    } : {})
+    } : {
+      transform: `scale(${scale})`,
+      transformOrigin: 'center center',
+      position: 'absolute',
+    })
   };
 
   return (
     <div style={outerContainerStyle}>
-      <div style={phoneFrameStyle}>
-        {/* iPhone Notch */}
-        <div style={styles.notch} />
+      <div style={scaledWrapperStyle}>
+        <div style={phoneFrameStyle}>
+          {/* iPhone Notch */}
+          <div style={styles.notch} />
 
-        {/* iPhone Status Bar */}
-        <div style={styles.statusBar}>
-          <span style={styles.statusTime}>9:41</span>
-          <div style={styles.statusIcons}>
-            {/* Cellular signal */}
-            <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor">
-              <rect x="0" y="8" width="2.5" height="3" rx="0.5" />
-              <rect x="3.5" y="6" width="2.5" height="5" rx="0.5" />
-              <rect x="7" y="4" width="2.5" height="7" rx="0.5" />
-              <rect x="10.5" y="2" width="2.5" height="9" rx="0.5" />
-              <rect x="14" y="0" width="2.5" height="11" rx="0.5" />
-            </svg>
-            {/* Wifi */}
-            <svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor">
-              <path d="M7.5 11c-.3 0-.5-.1-.7-.3C5.1 9 2.7 8 0 8V6.5c3.1 0 5.8 1.1 7.5 3 1.7-1.9 4.4-3 7.5-3V8c-2.7 0-5.1 1-6.8 2.7-.2.2-.4.3-.7.3z" />
-              <path d="M7.5 7.5c-.3 0-.5-.1-.7-.3C5.5 6 3.5 5.3 1.5 5.3V3.8c2.4 0 4.7.8 6 2.2 1.3-1.4 3.6-2.2 6-2.2v1.5c-2 .1-4 .7-5.3 1.9-.2.2-.4.3-.7.3z" />
-              <path d="M7.5 4c-.3 0-.5-.1-.7-.3C6 2.8 4.3 2.3 2.5 2.3V.8c2.1 0 4.2.6 5 1.7.8-1.1 2.9-1.7 5-.8v1.5c-1.8 0-3.5.5-4.3 1.4-.2.2-.4.3-.7.3z" />
-            </svg>
-            {/* Battery */}
-            <div style={styles.batteryContainer}>
-              <div style={styles.batteryBody}>
-                <div style={styles.batteryFill} />
+          {/* iPhone Status Bar */}
+          <div style={styles.statusBar}>
+            <span style={styles.statusTime}>9:41</span>
+            <div style={styles.statusIcons}>
+              {/* Cellular signal */}
+              <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor">
+                <rect x="0" y="8" width="2.5" height="3" rx="0.5" />
+                <rect x="3.5" y="6" width="2.5" height="5" rx="0.5" />
+                <rect x="7" y="4" width="2.5" height="7" rx="0.5" />
+                <rect x="10.5" y="2" width="2.5" height="9" rx="0.5" />
+                <rect x="14" y="0" width="2.5" height="11" rx="0.5" />
+              </svg>
+              {/* Wifi */}
+              <svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor">
+                <path d="M7.5 11c-.3 0-.5-.1-.7-.3C5.1 9 2.7 8 0 8V6.5c3.1 0 5.8 1.1 7.5 3 1.7-1.9 4.4-3 7.5-3V8c-2.7 0-5.1 1-6.8 2.7-.2.2-.4.3-.7.3z" />
+                <path d="M7.5 7.5c-.3 0-.5-.1-.7-.3C5.5 6 3.5 5.3 1.5 5.3V3.8c2.4 0 4.7.8 6 2.2 1.3-1.4 3.6-2.2 6-2.2v1.5c-2 .1-4 .7-5.3 1.9-.2.2-.4.3-.7.3z" />
+                <path d="M7.5 4c-.3 0-.5-.1-.7-.3C6 2.8 4.3 2.3 2.5 2.3V.8c2.1 0 4.2.6 5 1.7.8-1.1 2.9-1.7 5-.8v1.5c-1.8 0-3.5.5-4.3 1.4-.2.2-.4.3-.7.3z" />
+              </svg>
+              {/* Battery */}
+              <div style={styles.batteryContainer}>
+                <div style={styles.batteryBody}>
+                  <div style={styles.batteryFill} />
+                </div>
+                <div style={styles.batteryTip} />
               </div>
-              <div style={styles.batteryTip} />
             </div>
           </div>
-        </div>
 
-        {/* Dynamic App Content */}
-        <div style={styles.appContent}>
-          {children}
-        </div>
+          {/* Dynamic App Content */}
+          <div style={styles.appContent}>
+            {children}
+          </div>
 
-        {/* iPhone Home Indicator */}
-        <div style={styles.homeIndicatorContainer}>
-          <div style={styles.homeIndicator} />
+          {/* iPhone Home Indicator */}
+          <div style={styles.homeIndicatorContainer}>
+            <div style={styles.homeIndicator} />
+          </div>
         </div>
       </div>
     </div>

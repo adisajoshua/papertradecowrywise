@@ -360,8 +360,8 @@
       from the parent container overflow hidden bounds.
     */
     .phone-wrapper {
-      width: calc(min(100vh - 120px, 844px) * 390 / 844);
-      height: min(100vh - 120px, 844px);
+      width: calc(390px * var(--prototype-scale, 1));
+      height: calc(844px * var(--prototype-scale, 1));
       position: relative;
       display: flex;
       align-items: center;
@@ -382,7 +382,7 @@
       box-shadow: 0 30px 60px rgba(10, 46, 101, 0.12);
       background: #FFFFFF;
       transform-origin: center center;
-      transform: scale(calc(min(100vh - 120px, 844px) / 844));
+      transform: scale(var(--prototype-scale, 1));
     }
 
     .iframe-container iframe {
@@ -538,12 +538,12 @@
 
     /* Scales down the phone container specifically inside the modal to fit the screen */
     .prototype-modal .phone-wrapper {
-      height: min(100vh - 200px, 844px);
-      width: calc(min(100vh - 200px, 844px) * 390 / 844);
+      width: calc(390px * var(--modal-scale, 1));
+      height: calc(844px * var(--modal-scale, 1));
     }
 
     .prototype-modal .iframe-container {
-      transform: scale(calc(min(100vh - 200px, 844px) / 844));
+      transform: scale(var(--modal-scale, 1));
     }
 
     /* Low opacity states for presentation background */
@@ -933,6 +933,35 @@
 
   <!-- Script logic for presentation navigation and modal sandbox -->
   <script>
+    // Calculate and apply scaling factors to mockups dynamically
+    function updateMockupScales() {
+      // Side Panel Scale
+      const rightPanelHeight = window.innerHeight - 120;
+      const rightPanelWidth = (window.innerWidth * 0.45) - 40;
+      
+      const rightScaleHeight = rightPanelHeight / 844;
+      const rightScaleWidth = rightPanelWidth / 390;
+      
+      // Select the smaller scale to maintain aspect ratio, capped at 1.0 (100% size)
+      const prototypeScale = Math.max(0.3, Math.min(rightScaleHeight, rightScaleWidth, 1));
+      document.documentElement.style.setProperty('--prototype-scale', prototypeScale);
+
+      // Fullscreen Modal Scale
+      const modalHeight = window.innerHeight - 200;
+      const modalWidth = window.innerWidth - 80;
+      
+      const modalScaleHeight = modalHeight / 844;
+      const modalScaleWidth = modalWidth / 390;
+      
+      const modalScale = Math.max(0.3, Math.min(modalScaleHeight, modalScaleWidth, 1));
+      document.documentElement.style.setProperty('--modal-scale', modalScale);
+    }
+
+    // Attach resize listeners
+    window.addEventListener('resize', updateMockupScales);
+    window.addEventListener('DOMContentLoaded', updateMockupScales);
+    updateMockupScales(); // Run immediately
+
     let currentSlide = 0;
     const slides = document.querySelectorAll('.slide');
     const dots = document.querySelectorAll('.indicator-dot');
