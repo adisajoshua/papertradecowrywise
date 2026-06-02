@@ -2,6 +2,18 @@
 
 All notable changes to this project are documented in this file.
 
+## [6.0.0] - 2026-06-02
+
+### Added
+- Interactive stock ticker chart in [TradeFlow.tsx](file:///Users/2017pro/cowrywise-paper-trade/src/components/TradeFlow.tsx) with MouseMove/TouchMove guidelines and active price display.
+- Live Mock Order Book (Market Depth) card with random bid-ask queue volume fluctuations and educational explanations in [TradeFlow.tsx](file:///Users/2017pro/cowrywise-paper-trade/src/components/TradeFlow.tsx).
+- LinkedIn Certificate Sharing Modal inside [PaperDashboard.tsx](file:///Users/2017pro/cowrywise-paper-trade/src/components/PaperDashboard.tsx) using dynamic inputs and celebrate screen confetti triggers.
+
+## [5.4.0] - 2026-06-02
+
+### Fixed
+- Scaled modal phone container to `min(100vh - 200px, 844px)` in [presentation.html](file:///Users/2017pro/cowrywise-paper-trade/presentation.html) to prevent iframe viewport clipping at 100% browser zooms.
+
 ## [5.3.0] - 2026-06-01
 
 ### Fixed

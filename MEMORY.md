@@ -13,3 +13,6 @@
 - `[2026-06-01 | v5.1.0]` Updated fullscreen prototype modal in presentation.html to feature a solid white background and Cancel CTA button.
 - `[2026-06-01 | v5.2.0]` Increased the segmented control outer container height to 44px (touch target standard) and indicator height to 38px with dynamic left transitions.
 - `[2026-06-01 | v5.3.0]` Set `flexShrink: 0` on the segmented control container to prevent flex layouts under virtual keyboard constraints from collapsing the container height to 20px.
+- `[2026-06-02 | v5.4.0]` Scaled down modal phone wrapper and iframe container relative to viewport heights to resolve desktop scale clipping on `playprototype/fix` branch.
+- `[2026-06-02 | v6.0.0]` Added Interactive Ticker Charts (touch/drag gestures), Live Market Depth (order book simulation) with dynamic volume fluctuation loops, and LinkedIn certification sharing milestone loops on `feature/improvements` branch.
+

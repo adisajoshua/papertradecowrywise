@@ -11,3 +11,9 @@
 - **Symptoms**: The active white pill indicator overflowed and stuck out of the gray capsule container.
 - **Cause**: Under vertical space constraints (such as when the virtual keyboard opens), the container (a flex column child) shrank down to `20px` due to `flex-shrink: 1` defaults, while the absolute-positioned indicator maintained its full `38px` size.
 - **Fix**: Added `flexShrink: 0` to `segmentContainer` to lock height at exactly `44px`.
+
+### 3. Duplicate Object Property Compiler Error TS1117
+- **Symptoms**: The build step failed with `error TS1117: An object literal cannot have multiple properties with the same name.` targeting `TradeFlow.tsx`.
+- **Cause**: During the definition of the styles object, the `sparklineSvg` property was declared twice (once for layout, and once at the bottom of the new style declarations).
+- **Fix**: Removed the duplicate `sparklineSvg` block from the styles definition.
+
