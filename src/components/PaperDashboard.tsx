@@ -25,6 +25,12 @@ export const PaperDashboard: React.FC<PaperDashboardProps> = ({
   const [addAmount, setAddAmount] = useState('50000');
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [postText, setPostText] = useState(
+    "I'm excited to share that I just graduated as a Certified Mock Stock Investor on Cowrywise! 🚀\n\nI built a virtual stock portfolio, analyzed P/E ratios, tracked live market ticks, and mastered NGX equities risk-free. Ready to transition to real wealth building! #FinancialLiteracy #Cowrywise #Investing"
+  );
+  const [isPublishing, setIsPublishing] = useState(false);
+  const [publishSuccess, setPublishSuccess] = useState(false);
 
   const [hasCelebrated, setHasCelebrated] = useState(() => {
     return localStorage.getItem('cowrywise_paper_celebrated') === 'true';
@@ -73,6 +79,25 @@ export const PaperDashboard: React.FC<PaperDashboardProps> = ({
     navigator.clipboard.writeText("PAPERGRAD");
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handlePublish = () => {
+    setIsPublishing(true);
+    setTimeout(() => {
+      setIsPublishing(false);
+      setPublishSuccess(true);
+      
+      confetti({
+        particleCount: 120,
+        spread: 70,
+        origin: { y: 0.5 }
+      });
+      
+      setTimeout(() => {
+        setPublishSuccess(false);
+        setShowShareModal(false);
+      }, 1500);
+    }, 1200);
   };
 
   const handleAddFunds = () => {
@@ -232,9 +257,14 @@ export const PaperDashboard: React.FC<PaperDashboardProps> = ({
                     </div>
                   </div>
 
-                  <button style={styles.startRealBtn} onClick={onExitPaperMode}>
-                    Claim Waiver & Start Real Portfolio <ArrowRight size={16} style={{ marginLeft: '6px' }} />
-                  </button>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%', marginTop: '16px' }}>
+                    <button style={styles.startRealBtn} onClick={onExitPaperMode}>
+                      Claim Waiver & Start Real Portfolio <ArrowRight size={16} style={{ marginLeft: '6px' }} />
+                    </button>
+                    <button style={styles.shareLinkedinBtn} onClick={() => setShowShareModal(true)}>
+                      Share Certificate on LinkedIn 🚀
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <div style={styles.milestoneList}>
@@ -427,6 +457,66 @@ export const PaperDashboard: React.FC<PaperDashboardProps> = ({
           <button style={styles.submitFundsBtn} onClick={handleAddFunds}>
             Add Mock Cash
           </button>
+        </div>
+      </BottomSheet>
+
+      {/* LinkedIn Social Share Modal Bottom Sheet */}
+      <BottomSheet isOpen={showShareModal} onClose={() => setShowShareModal(false)} title="Share to LinkedIn">
+        <div style={styles.shareContent}>
+          {publishSuccess ? (
+            <div style={styles.shareSuccessContainer}>
+              <div style={styles.successCircle}>
+                <CheckCircle2 size={48} color="var(--c-gainer-text)" />
+              </div>
+              <h4 style={styles.successTitle}>Shared Successfully!</h4>
+              <p style={styles.successDesc}>Your certificate achievement has been posted to LinkedIn.</p>
+            </div>
+          ) : (
+            <div style={styles.shareEditorContainer}>
+              {/* Profile Bar */}
+              <div style={styles.shareProfileRow}>
+                <div style={styles.shareAvatar}>AJ</div>
+                <div style={styles.shareProfileInfo}>
+                  <strong style={styles.shareProfileName}>Adisa Joshua</strong>
+                  <span style={styles.shareProfileScope}>Anyone • Post</span>
+                </div>
+              </div>
+
+              {/* Text Area */}
+              <textarea
+                value={postText}
+                onChange={(e) => setPostText(e.target.value)}
+                style={styles.shareTextarea}
+                rows={5}
+              />
+
+              {/* Certificate Preview Card */}
+              <div style={styles.sharePreviewCard}>
+                <div style={styles.previewCardLeft}>
+                  <Award size={36} color="hsl(45, 90%, 45%)" />
+                </div>
+                <div style={styles.previewCardRight}>
+                  <strong style={styles.previewCertTitle}>Certified Mock Stock Investor</strong>
+                  <span style={styles.previewCertName}>Adisa Joshua</span>
+                  <span style={styles.previewCertIssuer}>Issued by Cowrywise Sandbox</span>
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div style={styles.shareActionsRow}>
+                <button style={styles.shareCancelBtn} onClick={() => setShowShareModal(false)}>
+                  Cancel
+                </button>
+                <button 
+                  style={styles.shareSubmitBtn} 
+                  onClick={handlePublish}
+                  disabled={isPublishing}
+                >
+                  {isPublishing ? "Sharing..." : "Post to LinkedIn"}
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </BottomSheet>
     </div>
@@ -979,5 +1069,158 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: 'center',
     boxShadow: '0 4px 12px rgba(0, 102, 245, 0.25)',
     transition: 'all var(--transition-fast)',
+  },
+  shareLinkedinBtn: {
+    backgroundColor: '#0077B5',
+    color: '#ffffff',
+    border: 'none',
+    borderRadius: '16px',
+    padding: '14px 20px',
+    fontSize: '14px',
+    fontWeight: '700',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    boxShadow: '0 4px 12px rgba(0, 119, 181, 0.25)',
+    transition: 'all var(--transition-fast)',
+  },
+  shareContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
+  },
+  shareSuccessContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    textAlign: 'center',
+    padding: '24px 0',
+  },
+  successCircle: {
+    marginBottom: '16px',
+  },
+  successTitle: {
+    fontSize: '18px',
+    fontWeight: '700',
+    color: 'var(--c-primary)',
+    marginBottom: '8px',
+  },
+  successDesc: {
+    fontSize: '13px',
+    color: 'var(--c-text-secondary)',
+    lineHeight: '1.4',
+  },
+  shareEditorContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+    width: '100%',
+  },
+  shareProfileRow: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+  },
+  shareAvatar: {
+    width: '38px',
+    height: '38px',
+    borderRadius: '50%',
+    backgroundColor: 'var(--c-active)',
+    color: '#ffffff',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontWeight: '700',
+    fontSize: '13px',
+  },
+  shareProfileInfo: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  shareProfileName: {
+    fontSize: '14px',
+    fontWeight: '700',
+    color: 'var(--c-primary)',
+  },
+  shareProfileScope: {
+    fontSize: '11px',
+    color: 'var(--c-text-secondary)',
+  },
+  shareTextarea: {
+    width: '100%',
+    borderRadius: '12px',
+    border: '1px solid var(--c-border)',
+    padding: '12px',
+    fontSize: '13px',
+    fontFamily: 'var(--font-family-text)',
+    color: 'var(--c-text-primary)',
+    lineHeight: '1.5',
+    resize: 'none',
+    boxSizing: 'border-box',
+    outline: 'none',
+  },
+  sharePreviewCard: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '16px',
+    backgroundColor: 'hsl(45, 90%, 97%)',
+    border: '1px solid hsl(45, 60%, 85%)',
+    borderRadius: '12px',
+    padding: '16px',
+    boxSizing: 'border-box',
+  },
+  previewCardLeft: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  previewCardRight: {
+    display: 'flex',
+    flexDirection: 'column',
+    textAlign: 'left',
+    gap: '2px',
+  },
+  previewCertTitle: {
+    fontSize: '13px',
+    fontWeight: '800',
+    color: 'hsl(45, 90%, 20%)',
+    fontFamily: 'var(--font-family-display)',
+  },
+  previewCertName: {
+    fontSize: '12px',
+    fontWeight: '600',
+    color: 'hsl(45, 80%, 25%)',
+  },
+  previewCertIssuer: {
+    fontSize: '10px',
+    color: 'hsl(45, 50%, 35%)',
+  },
+  shareActionsRow: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    gap: '12px',
+    marginTop: '8px',
+  },
+  shareCancelBtn: {
+    padding: '10px 20px',
+    borderRadius: '12px',
+    border: '1px solid var(--c-border)',
+    backgroundColor: 'transparent',
+    color: 'var(--c-text-secondary)',
+    fontSize: '13px',
+    fontWeight: '600',
+    cursor: 'pointer',
+  },
+  shareSubmitBtn: {
+    padding: '10px 24px',
+    borderRadius: '12px',
+    border: 'none',
+    backgroundColor: '#0077B5',
+    color: '#ffffff',
+    fontSize: '13px',
+    fontWeight: '700',
+    cursor: 'pointer',
+    boxShadow: '0 4px 12px rgba(0, 119, 181, 0.2)',
   },
 };

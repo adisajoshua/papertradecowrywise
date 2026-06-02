@@ -27,10 +27,84 @@ export const TradeFlow: React.FC<TradeFlowProps> = ({ stock, onClose, onSuccess 
   const [simPrice, setSimPrice] = useState(stock.price);
   const [simEarnings, setSimEarnings] = useState(initialEps);
 
+  // Interactive Ticker Chart state
+  const [hoverIndex, setHoverIndex] = useState<number | null>(null);
+  const [hoverPos, setHoverPos] = useState<{ x: number; y: number } | null>(null);
+
+  // Simulated live Order Book state
+  const [orderBook, setOrderBook] = useState(() => {
+    const basePrice = stock.price;
+    return {
+      bids: [
+        { price: basePrice - 0.05, vol: Math.floor(1000 + Math.random() * 5000) },
+        { price: basePrice - 0.12, vol: Math.floor(2000 + Math.random() * 8000) },
+        { price: basePrice - 0.20, vol: Math.floor(3000 + Math.random() * 10000) },
+      ],
+      asks: [
+        { price: basePrice + 0.04, vol: Math.floor(1200 + Math.random() * 4000) },
+        { price: basePrice + 0.10, vol: Math.floor(1800 + Math.random() * 6000) },
+        { price: basePrice + 0.18, vol: Math.floor(2500 + Math.random() * 9000) },
+      ]
+    };
+  });
+
+  // Fluctuate order book volumes periodically to make it feel alive
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setOrderBook((prev) => {
+        const fluctuate = (item: { price: number; vol: number }) => {
+          const delta = Math.floor((Math.random() - 0.5) * 500);
+          const newVol = Math.max(100, item.vol + delta);
+          return { ...item, vol: newVol };
+        };
+        return {
+          bids: prev.bids.map(fluctuate),
+          asks: prev.asks.map(fluctuate),
+        };
+      });
+    }, 2500);
+    return () => clearInterval(interval);
+  }, [stock.price]);
+
   // Trigger researched milestone on mount
   useEffect(() => {
     updateMilestone('researched', true);
   }, []);
+
+  const handleChartInteraction = (clientX: number, target: SVGSVGElement) => {
+    const rect = target.getBoundingClientRect();
+    const x = (clientX - rect.left) * (340 / rect.width);
+    const points = stock.sparkline;
+    if (points.length < 2) return;
+    
+    const index = Math.max(0, Math.min(points.length - 1, Math.round((x / 340) * (points.length - 1))));
+    
+    const min = Math.min(...points);
+    const max = Math.max(...points);
+    const range = max - min || 1;
+    const y = 100 - ((points[index] - min) / range) * 100;
+    
+    setHoverIndex(index);
+    setHoverPos({
+      x: (index / (points.length - 1)) * 340,
+      y
+    });
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<SVGSVGElement>) => {
+    handleChartInteraction(e.clientX, e.currentTarget);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<SVGSVGElement>) => {
+    if (e.touches.length > 0) {
+      handleChartInteraction(e.touches[0].clientX, e.currentTarget);
+    }
+  };
+
+  const handleInteractionEnd = () => {
+    setHoverIndex(null);
+    setHoverPos(null);
+  };
 
   const summary = getPortfolioSummary();
   const cashAvailable = summary ? summary.cashAvailable : 0;
@@ -362,20 +436,123 @@ export const TradeFlow: React.FC<TradeFlowProps> = ({ stock, onClose, onSuccess 
         {/* Visual Sparkline chart inside entry screen to see current performance */}
         <div style={styles.chartWrapper}>
           <div style={styles.chartHeader}>
-            <span style={styles.chartTitle}>7-Day Performance</span>
-            <HelpCircle size={14} color="var(--c-text-secondary)" />
+            <span style={styles.chartTitle}>
+              {hoverIndex !== null 
+                ? `${hoverIndex === 6 ? 'Today' : hoverIndex === 5 ? 'Yesterday' : `${6 - hoverIndex} days ago`}: ₦${stock.sparkline[hoverIndex].toFixed(2)}`
+                : '7-Day Performance'
+              }
+            </span>
+            {hoverIndex !== null ? (
+              <span style={styles.liveIndicator}>Interactive Ticker</span>
+            ) : (
+              <HelpCircle size={14} color="var(--c-text-secondary)" />
+            )}
           </div>
-          <svg style={styles.sparklineSvg} viewBox="0 0 340 100">
-            <path
-              d={generateSparklinePath(stock.sparkline)}
-              fill="none"
-              stroke="var(--c-active)"
-              strokeWidth="2.5"
-              strokeDasharray="400"
-              strokeDashoffset="400"
-              style={{ animation: 'draw-sparkline 1.5s forwards ease-in-out' }}
-            />
-          </svg>
+          <div style={{ position: 'relative' }}>
+            <svg 
+              style={{ ...styles.sparklineSvg, cursor: 'crosshair' }} 
+              viewBox="0 0 340 100"
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleInteractionEnd}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleInteractionEnd}
+            >
+              <path
+                d={generateSparklinePath(stock.sparkline)}
+                fill="none"
+                stroke="var(--c-active)"
+                strokeWidth="2.5"
+                strokeDasharray="400"
+                strokeDashoffset="400"
+                style={{ animation: 'draw-sparkline 1.5s forwards ease-in-out' }}
+              />
+              
+              {hoverPos && (
+                <>
+                  {/* Vertical cursor guideline */}
+                  <line
+                    x1={hoverPos.x}
+                    y1={0}
+                    x2={hoverPos.x}
+                    y2={100}
+                    stroke="rgba(0, 102, 245, 0.25)"
+                    strokeWidth="1.5"
+                    strokeDasharray="3,3"
+                  />
+                  {/* Active intersection point dot */}
+                  <circle
+                    cx={hoverPos.x}
+                    cy={hoverPos.y}
+                    r="6"
+                    fill="var(--c-active)"
+                    stroke="#FFFFFF"
+                    strokeWidth="2"
+                  />
+                </>
+              )}
+            </svg>
+            {!hoverPos && (
+              <div style={styles.dragChartHint}>
+                ↔ Drag across chart to inspect history
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Mock Order Book (Market Depth) card */}
+        <div style={styles.orderBookCard}>
+          <div style={styles.orderBookHeader}>
+            <span style={styles.orderBookTitle}>Live Market Depth (Order Book)</span>
+            <span style={styles.spreadBadge}>
+              Spread: ₦{(orderBook.asks[0].price - orderBook.bids[0].price).toFixed(2)}
+            </span>
+          </div>
+
+          <div style={styles.orderBookTable}>
+            {/* Ask / Sellers (Red) - rendered descending */}
+            <div style={styles.orderBookSection}>
+              <div style={styles.orderBookTableHeader}>
+                <span>Ask Price (Seller)</span>
+                <span>Volume</span>
+              </div>
+              {[...orderBook.asks].reverse().map((ask, idx) => (
+                <div key={`ask-${idx}`} style={styles.orderBookRow}>
+                  <span style={{ color: 'var(--c-loser-text)', fontWeight: '600', fontSize: '12px' }}>
+                    ₦{ask.price.toFixed(2)}
+                  </span>
+                  <span style={styles.orderBookVol}>{ask.vol.toLocaleString()}</span>
+                </div>
+              ))}
+            </div>
+
+            <div style={styles.midSpreadRow}>
+              <span>Current Price</span>
+              <strong style={{ fontSize: '14px', color: 'var(--c-primary)' }}>
+                ₦{stock.price.toFixed(2)}
+              </strong>
+            </div>
+
+            {/* Bid / Buyers (Green) - rendered descending */}
+            <div style={styles.orderBookSection}>
+              <div style={styles.orderBookTableHeader}>
+                <span>Bid Price (Buyer)</span>
+                <span>Volume</span>
+              </div>
+              {orderBook.bids.map((bid, idx) => (
+                <div key={`bid-${idx}`} style={styles.orderBookRow}>
+                  <span style={{ color: 'var(--c-gainer-text)', fontWeight: '600', fontSize: '12px' }}>
+                    ₦{bid.price.toFixed(2)}
+                  </span>
+                  <span style={styles.orderBookVol}>{bid.vol.toLocaleString()}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Educational Explain Box */}
+          <div style={styles.orderBookExplain}>
+            💡 Buyers bid lower; sellers ask higher. An order executes when a buyer matches a seller's price. The gap between them is the **spread**.
+          </div>
         </div>
       </div>
 
@@ -983,10 +1160,129 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: '600',
     color: 'var(--c-text-secondary)',
   },
+  liveIndicator: {
+    fontSize: '9px',
+    fontWeight: '700',
+    color: 'var(--c-active)',
+    backgroundColor: 'rgba(0, 102, 245, 0.08)',
+    padding: '2px 6px',
+    borderRadius: '8px',
+    textTransform: 'uppercase',
+    letterSpacing: '0.5px',
+  },
   sparklineSvg: {
     width: '100%',
     height: '60px',
     overflow: 'visible',
+  },
+  dragChartHint: {
+    position: 'absolute',
+    bottom: '2px',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    pointerEvents: 'none',
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    padding: '2px 8px',
+    borderRadius: '8px',
+    border: '1px solid var(--c-border)',
+    fontSize: '9px',
+    fontWeight: '600',
+    color: 'var(--c-text-secondary)',
+    whiteSpace: 'nowrap',
+    boxShadow: 'var(--shadow-subtle)',
+  },
+  orderBookCard: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: '16px',
+    padding: '14px 16px',
+    border: '1px solid var(--c-border)',
+    boxSizing: 'border-box',
+    marginBottom: '20px',
+    boxShadow: 'var(--shadow-subtle)',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '12px',
+  },
+  orderBookHeader: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderBottom: '0.5px solid var(--c-border)',
+    paddingBottom: '8px',
+  },
+  orderBookTitle: {
+    fontSize: '12px',
+    fontWeight: '700',
+    color: 'var(--c-primary)',
+    fontFamily: 'var(--font-family-display)',
+  },
+  spreadBadge: {
+    fontSize: '10px',
+    fontWeight: '600',
+    color: 'var(--c-active)',
+    backgroundColor: 'rgba(0, 102, 245, 0.08)',
+    padding: '2px 8px',
+    borderRadius: '12px',
+  },
+  orderBookTable: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '4px',
+    boxSizing: 'border-box',
+  },
+  orderBookSection: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '2px',
+  },
+  orderBookTableHeader: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    fontSize: '9px',
+    fontWeight: '600',
+    color: 'var(--c-text-secondary)',
+    textTransform: 'uppercase',
+    letterSpacing: '0.2px',
+    padding: '2px 4px',
+  },
+  orderBookRow: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '3px 4px',
+    borderRadius: '4px',
+    backgroundColor: '#F9FAFB',
+    transition: 'background-color 0.2s ease',
+  },
+  orderBookVol: {
+    fontSize: '11px',
+    fontWeight: '500',
+    color: 'var(--c-text-secondary)',
+    fontFamily: 'monospace',
+  },
+  midSpreadRow: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '6px 8px',
+    backgroundColor: 'rgba(0, 102, 245, 0.04)',
+    borderTop: '1px dashed var(--c-border)',
+    borderBottom: '1px dashed var(--c-border)',
+    margin: '4px 0',
+    borderRadius: '6px',
+    fontSize: '11px',
+    fontWeight: '600',
+    color: 'var(--c-text-secondary)',
+  },
+  orderBookExplain: {
+    backgroundColor: 'hsl(45, 100%, 96%)',
+    border: '1px solid hsl(45, 100%, 85%)',
+    borderRadius: '10px',
+    padding: '10px 12px',
+    fontSize: '11px',
+    color: 'hsl(45, 90%, 25%)',
+    lineHeight: '1.4',
+    boxSizing: 'border-box',
   },
   confirmContent: {
     display: 'flex',
