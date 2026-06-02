@@ -2,6 +2,17 @@
 
 All notable changes to this project are documented in this file.
 
+## [5.5.0] - 2026-06-02
+
+### Added
+- Dynamic JS-driven mockup scaling in [presentation.html](file:///Users/2017pro/cowrywise-playprototype-fix/presentation.html) using window resize event listeners and global CSS custom variables (`--prototype-scale` and `--modal-scale`).
+- Standalone responsive app scaling in [ViewportFrame.tsx](file:///Users/2017pro/cowrywise-playprototype-fix/src/components/ViewportFrame.tsx) using React resize hooks to scale the phone frame mockup dynamically on smaller viewports.
+
+## [5.4.0] - 2026-06-02
+
+### Fixed
+- Constrained fullscreen prototype modal mockup height using CSS `min()` to fit within dynamic heights.
+
 ## [5.3.0] - 2026-06-01
 
 ### Fixed
