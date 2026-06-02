@@ -484,6 +484,9 @@
       height: 100vh;
       justify-content: center;
       align-items: center;
+      overflow-y: auto;
+      padding: 40px 0;
+      box-sizing: border-box;
     }
 
     .prototype-modal.active {
@@ -531,6 +534,16 @@
       background-color: var(--c-blue);
       transform: translateY(-1px);
       box-shadow: 0 12px 32px rgba(0, 102, 245, 0.2);
+    }
+
+    /* Scales down the phone container specifically inside the modal to fit the screen */
+    .prototype-modal .phone-wrapper {
+      height: min(100vh - 200px, 844px);
+      width: calc(min(100vh - 200px, 844px) * 390 / 844);
+    }
+
+    .prototype-modal .iframe-container {
+      transform: scale(calc(min(100vh - 200px, 844px) / 844));
     }
 
     /* Low opacity states for presentation background */
